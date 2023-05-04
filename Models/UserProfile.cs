@@ -7,7 +7,7 @@ namespace SurvivorGPT.Models
 	public class UserProfile
 	{
 		public int Id { get; set; }
-		public int FirebaseUserId { get; set; }
+		public string FirebaseUserId { get; set; }
 		[Required]
 		public string Email { get; set; }
 		[Required]
@@ -24,9 +24,9 @@ namespace SurvivorGPT.Models
 		public string State { get; set; }
 		[Required]
 		public string Country { get; set; }
-		public int InventoryId {  get; set; }
-		public int ShelterId { get; set; }
-		public int CurriculumId { get; set; }
+		public int? ShelterId { get; set; }
+		public int? CurriculumId { get; set; }
+		public bool? IsActive { get; set; }
 
 	}
 }

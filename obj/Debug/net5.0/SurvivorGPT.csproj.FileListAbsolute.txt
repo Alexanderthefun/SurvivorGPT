@@ -67,3 +67,7 @@ C:\Users\AFdev\workspace\SurvivorGPT\obj\Debug\net5.0\refint\SurvivorGPT.dll
 C:\Users\AFdev\workspace\SurvivorGPT\obj\Debug\net5.0\SurvivorGPT.pdb
 C:\Users\AFdev\workspace\SurvivorGPT\obj\Debug\net5.0\SurvivorGPT.genruntimeconfig.cache
 C:\Users\AFdev\workspace\SurvivorGPT\obj\Debug\net5.0\ref\SurvivorGPT.dll
+C:\Users\AFdev\workspace\SurvivorGPT\bin\Debug\net5.0\Client\survivorgpt-frontend\package-lock.json
+C:\Users\AFdev\workspace\SurvivorGPT\bin\Debug\net5.0\Client\survivorgpt-frontend\package.json
+C:\Users\AFdev\workspace\SurvivorGPT\bin\Debug\net5.0\Client\survivorgpt-frontend\public\manifest.json
+C:\Users\AFdev\workspace\SurvivorGPT\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

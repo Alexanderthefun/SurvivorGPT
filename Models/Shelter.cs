@@ -8,8 +8,8 @@ namespace SurvivorGPT.Models
 	{
 		public int Id { get; set; }
 		[Required]
-		public string BuildMaterials { get; set; }
+		public string ShelterMaterials { get; set; }
 		[Required]
-		public string BuildPlan { get; set; }
+		public string ShelterPlan { get; set; }
 	}
 }
