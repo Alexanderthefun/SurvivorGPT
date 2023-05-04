@@ -78,8 +78,6 @@ namespace SurvivorGPT.Repositories
 							}
 
 							if (DbUtils.IsNotDbNull(reader, "FoodId"))
-							//&& (DbUtils.IsNotDbNull(reader, "Protein")) && (DbUtils.IsNotDbNull(reader, "FruitVeggieFungi"))
-							//&& (DbUtils.IsNotDbNull(reader, "Name")) && (DbUtils.IsNotDbNull(reader, "Count")))
 							{
 								var ExistingFood = inventory.foods.FirstOrDefault(f => f.Id == DbUtils.GetInt(reader, "FoodId"));
 								if (ExistingFood == null)
@@ -90,21 +88,10 @@ namespace SurvivorGPT.Repositories
 										Name = DbUtils.GetString(reader, "FoodName"),
 										Count = DbUtils.GetInt(reader, "Count"),
 										Protein = reader.GetBoolean(reader.GetOrdinal("Protein")),
-										//FruitVeggieFungi = reader.GetBoolean(reader.GetOrdinal("FruitVeggieFungi"))
+										FruitVeggieFungi = reader.GetBoolean(reader.GetOrdinal("FruitVeggieFungi"))
 									});
 								}
 							}
-							//else
-							//{
-							//	inventory.foods.Add(new Food()
-							//	{
-							//		Id = DbUtils.GetInt(reader, "FoodId"),
-							//		Name = DbUtils.GetString(reader, "Name"),
-							//		Count = DbUtils.GetInt(reader, "Count"),
-							//		Protein = false,
-							//		FruitVeggieFungi = false
-							//	});
-							//}
 
 							if (DbUtils.IsNotDbNull(reader, "ToolId"))
 							{

@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "QiMYLN1PTsQbDI7MtkERG8d+1MkkZQF0cq6g3JyOBGaH6RCH2Nhs05jo8M0qRMwq/ZEOal77fLVJdhfVeZnSYw==",
+  "dgSpecHash": "eGXFlbNHD5kZbPSN5aTDgndg2dYccUVHJRqEh3Iv3mUZzG1RvUHiRfzUDFGd7b7PDEbcdHQCr/K7gs7FNilSMQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\AFdev\\workspace\\SurvivorGPT\\SurvivorGPT.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\AFdev\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\AFdev\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\AFdev\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.17\\microsoft.aspnetcore.authentication.jwtbearer.5.0.17.nupkg.sha512",
     "C:\\Users\\AFdev\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\AFdev\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\AFdev\\.nuget\\packages\\microsoft.data.sqlclient\\5.1.1\\microsoft.data.sqlclient.5.1.1.nupkg.sha512",

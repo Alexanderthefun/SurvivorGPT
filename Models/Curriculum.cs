@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SurvivorGPT.Models
@@ -7,8 +8,7 @@ namespace SurvivorGPT.Models
 	{
 		public int Id { get; set; }
 		[Required]
-		public string DailyContent { get; set; }
-		public int TribeMemberId { get; set; }
-		public List<TribeMember> TribeMembers { get; set; }
+		public string DailySchedule { get; set; }
+		public DateTime? DateCreated { get; set; }
 	}
 }
