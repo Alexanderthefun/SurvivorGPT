@@ -19,9 +19,9 @@ namespace SurvivorGPT.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public IActionResult Get(int id)
+		public IActionResult Get(int userId)
 		{
-			var curriculum = _curriculumRepository.GetCurrentCurriculum(id);
+			var curriculum = _curriculumRepository.GetCurrentCurriculum(userId);
 			if (curriculum == null)
 			{
 				return NotFound();

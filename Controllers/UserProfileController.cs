@@ -38,7 +38,7 @@ namespace SurvivorGPT.Controllers
 		}
 
 		//[Authorize]
-		[HttpGet("DoesUserExist/{firebaseUserId}")]
+		[HttpGet("{firebaseUserId}")]
 		public IActionResult GetByFirebaseUserId(string firebaseUserId)
 		{
 			var user = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
