@@ -101,8 +101,9 @@ namespace SurvivorGPT.Repositories
 									inventory.tools.Add(new Tool()
 									{
 										Id = DbUtils.GetInt(reader, "ToolId"),
-										Name = DbUtils.GetString(reader, "ToolName")
-									});
+										Name = DbUtils.GetString(reader, "ToolName"),
+										UserHas = reader.GetBoolean(reader.GetOrdinal("UserHas"))
+									});;
 								}
 							}
 
@@ -114,7 +115,8 @@ namespace SurvivorGPT.Repositories
 									inventory.weapons.Add(new Weapon()
 									{
 										Id = DbUtils.GetInt(reader, "WeaponId"),
-										Name = DbUtils.GetString(reader, "WeaponName")
+										Name = DbUtils.GetString(reader, "WeaponName"),
+										UserHas = reader.GetBoolean(reader.GetOrdinal("UserHas"))
 									});
 								}
 							}
@@ -127,7 +129,8 @@ namespace SurvivorGPT.Repositories
 									inventory.energySources.Add(new Energy()
 									{
 										Id = DbUtils.GetInt(reader, "EnergyId"),
-										Name = DbUtils.GetString(reader, "EnergyName")
+										Name = DbUtils.GetString(reader, "EnergyName"),
+										UserHas = reader.GetBoolean(reader.GetOrdinal("UserHas"))
 									});
 								}
 							}
@@ -139,13 +142,162 @@ namespace SurvivorGPT.Repositories
 									inventory.miscellaneousItems.Add(new Miscellaneous()
 									{
 										Id = DbUtils.GetInt(reader, "MiscellaneousId"),
-										Name = DbUtils.GetString(reader, "MiscellaneousName")
+										Name = DbUtils.GetString(reader, "MiscellaneousName"),
+										UserHas = reader.GetBoolean(reader.GetOrdinal("UserHas"))
 									});
 								}
 							}
 						}
 						return inventory;
 					}
+				}
+			}
+		}
+
+		public void AddInventory(Inventory inventory)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"INSERT INTO Inventory
+											(UserId)
+										OUTPUT INSERTED.ID
+										VALUES (@UserId)";
+					DbUtils.AddParameter(cmd, "@UserId", inventory.Id);
+
+					inventory.Id = (int)cmd.ExecuteScalar();
+				}
+			}
+		}
+
+		public void AddFood(Food food)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"INSERT INTO Food
+											(Name, Count, Protein, FruitVeggieFungi)
+										OUTPUT INSERTED.ID
+										VALUES (@Name, @Count, @Protein, @FruitVeggieFungi)";
+					DbUtils.AddParameter(cmd, "@Name", food.Name);
+					DbUtils.AddParameter(cmd, "@Count", food.Count);
+					DbUtils.AddParameter(cmd, "@Protein", food.Protein);
+					DbUtils.AddParameter(cmd, "@FruitVeggieFungi", food.FruitVeggieFungi);
+
+					food.Id = (int)cmd.ExecuteScalar();
+				}
+			}
+		}
+		public void UpdateFood(Food food)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"Update Food
+								SET Name = @Name,
+									Count = @Count,
+									Protein = @Protein,
+									FruitVeggieFungi = @FruitVeggieFungi
+								WHERE Id = @Id";
+
+					DbUtils.AddParameter(cmd, "@Id", food.Id);
+					DbUtils.AddParameter(cmd, "@Name", food.Name);
+					DbUtils.AddParameter(cmd, "@Count", food.Count);
+					DbUtils.AddParameter(cmd, "@Protein", food.Protein);
+					DbUtils.AddParameter(cmd, "@FruitVeggieFungi", food.FruitVeggieFungi);
+
+					cmd.ExecuteNonQuery();
+
+				}
+			}
+		}
+
+		public void UpdateTool(Tool tool)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"Update Tool
+										SET Name = @Name
+											UserHas = @UserHas
+										WHERE Id = @Id";
+					DbUtils.AddParameter(cmd, "Id", tool.Id);
+					DbUtils.AddParameter(cmd, "Name", tool.Name);
+					DbUtils.AddParameter(cmd, "UserHas", tool.UserHas);
+
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public void UpdateWeapon(Weapon weapon)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"Update Weapon
+										SET Name = @Name
+											UserHas = @UserHas
+										WHERE Id = @Id";
+					DbUtils.AddParameter(cmd, "Id", weapon.Id);
+					DbUtils.AddParameter(cmd, "Name", weapon.Name);
+					DbUtils.AddParameter(cmd, "UserHas", weapon.UserHas);
+
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public void UpdateEnergy(Energy energy)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"Update Energy
+										SET Name = @Name
+											UserHas = @UserHas
+										WHERE Id = @Id";
+					DbUtils.AddParameter(cmd, "Id", energy.Id);
+					DbUtils.AddParameter(cmd, "Name", energy.Name);
+					DbUtils.AddParameter(cmd, "UserHas", energy.UserHas);
+
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public void UpdateMiscellaneous(Miscellaneous miscellaneous)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"Update Miscellaneous
+										SET Name = @Name
+											UserHas = @UserHas
+										WHERE Id = @Id";
+					DbUtils.AddParameter(cmd, "Id", miscellaneous.Id);
+					DbUtils.AddParameter(cmd, "Name", miscellaneous.Name);
+					DbUtils.AddParameter(cmd, "UserHas", miscellaneous.UserHas);
+
+					cmd.ExecuteNonQuery();
 				}
 			}
 		}

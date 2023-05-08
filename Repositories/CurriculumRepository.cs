@@ -12,7 +12,7 @@ namespace SurvivorGPT.Repositories
 	{
 		public CurriculumRepository(IConfiguration configuration) : base(configuration) { }
 
-		public Curriculum GetCurrentCurriculum(int curriculumId)
+		public Curriculum GetCurrentCurriculum(int userId)
 		{
 			using (var conn = Connection)
 			{
@@ -22,9 +22,10 @@ namespace SurvivorGPT.Repositories
 					cmd.CommandText = @"
 						SELECT *
 						FROM Curriculum
-						WHERE Id = @curriculumId";
+						LEFT JOIN UserProfile on UserProfile.CurriculumId = Curriculum.Id
+						WHERE userId = @UserProfile.Id";
 
-					DbUtils.AddParameter(cmd, "@curriculumId", curriculumId);
+					DbUtils.AddParameter(cmd, "@userId", userId);
 
 					Curriculum curriculum = null;
 
