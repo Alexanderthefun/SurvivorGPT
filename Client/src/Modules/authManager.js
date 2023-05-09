@@ -16,6 +16,27 @@ export const getUserDetails = (firebaseUUID) => {
     })
   }
 
+  const _doesUserExist = (firebaseUserId) => {
+    return getToken().then((token) =>
+      fetch(`${_apiUrl}/${firebaseUserId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(resp => resp.json()));
+  };
+
+  export const me = () => {
+    return getToken().then((token) =>
+      fetch(`${_apiUrl}/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((resp) => resp.json())
+    );
+  };
+
   export const login = (email, pw) => {
     return firebase.auth().signInWithEmailAndPassword(email, pw)
       .then((signInResponse) => _doesUserExist(signInResponse.user.uid))
