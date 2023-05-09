@@ -43,8 +43,8 @@ namespace SurvivorGPT.Repositories
 							City = DbUtils.GetString(reader, "City"),
 							State = DbUtils.GetString(reader, "State"),
 							Country = DbUtils.GetString(reader, "Country"),
-							ShelterId = DbUtils.GetInt(reader, "ShelterId"),
-							CurriculumId = DbUtils.GetInt(reader, "CurriculumId"),
+							ShelterId = DbUtils.GetNullableInt(reader, "ShelterId"),
+							CurriculumId = DbUtils.GetNullableInt(reader, "CurriculumId"),
 						};
 					}
 					reader.Close();

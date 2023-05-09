@@ -8,6 +8,7 @@ using System.Security.Claims;
 namespace SurvivorGPT.Controllers
 {
 	[Route("api/[controller]")]
+	[Authorize]
 	[ApiController]
 	public class UserProfileController : ControllerBase
 	{
@@ -25,8 +26,8 @@ namespace SurvivorGPT.Controllers
 			return Ok(_userProfileRepository.GetAllUsers());
 		}
 
-		//[Authorize]
-		[HttpGet("{id}")]
+		[Authorize]
+		[HttpGet("/getbyid/{id}")]
 		public IActionResult Get(int id)
 		{
 			var user = _userProfileRepository.GetById(id);
@@ -47,6 +48,19 @@ namespace SurvivorGPT.Controllers
 				return NotFound();
 			}
 			return Ok(user);
+		}
+
+		[HttpGet("DoesUserExist/{firebaseUserId}")]
+		public IActionResult DoesUserExist(string firebaseUserId)
+		{
+			var userProfile = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+
+			if (userProfile == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(userProfile);
 		}
 
 		[HttpGet("Me")]
