@@ -21,10 +21,10 @@ namespace SurvivorGPT.Repositories
 
 		public void DeleteFood(int InvFoodId);
 		public void DeleteFoodType(int id);
-		public void DeleteTool(int InvToolId);
-		public void DeleteWeapon(int InvWeaponId);
-		public void DeleteEnergy(int InvEnergyId);
-		public void DeleteMiscellaneous(int InvMiscellaneousId);
+		public void DeleteTool(int ToolId, int InvId);
+		public void DeleteWeapon(int WeaponId, int InvId);
+		public void DeleteEnergy(int EnergyId, int InvId);
+		public void DeleteMiscellaneous(int MiscellaneousId, int InvId);
 
 		public Inventory GetCurrentUserInventory(int userId);
 		public List<Inventory> GetAllInventoryUserIds();

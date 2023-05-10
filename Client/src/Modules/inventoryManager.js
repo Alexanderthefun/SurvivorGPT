@@ -4,22 +4,30 @@ const _apiUrl = "/api/inventory"
 
 export const getInventory = (id) => {
     return getToken().then(token => {
-        // The query parameters are only added if an argument is provided for them
-        return fetch(`${_apiUrl}/${id}`, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }).then(res => res.json())
+      return fetch(`${_apiUrl}/${id}`, {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+        return res.json();
+      })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
     })
-}
+  }
 
 export const getAllInventoryUserIds = () => {
     return getToken().then(token => {
         return fetch(`${_apiUrl}/getAllInvUserIds`, {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${token}`
+                "Authorization": "Bearer " + token
             }
         }).then(res => res.json())
     })
@@ -31,7 +39,7 @@ export const addInventory = (inventory) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': "Bearer " + token
             },
             body: JSON.stringify(inventory)
         }).then((resp) => {
@@ -52,7 +60,7 @@ export const addFoodType = (food) => {
         return fetch(`${_apiUrl}`, {
             method: "POST",
             headers: {
-                Authorization: `Bearer ${token}`,
+                "Authorization": "Bearer " + token,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify( food )
@@ -65,7 +73,7 @@ export const DeleteFoodType = (id) => {
         return fetch(`${_apiUrl}/deleteFoodType/${id}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': "Bearer " + token
             }
         })
     });
@@ -76,7 +84,7 @@ export const addFood = (invFood) => {
         return fetch(`${_apiUrl}/food`, {
             method: "POST",
             headers: {
-                Authorization: `Bearer ${token}`,
+                "Authorization": "Bearer " + token,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify( invFood )
@@ -89,7 +97,7 @@ export const DeleteFood = (id) => {
         return fetch(`${_apiUrl}/deleteFood/${id}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': "Bearer " + token
             }
         })
     });
@@ -100,7 +108,7 @@ export const getAllTools = () => {
         return fetch(`${_apiUrl}/tools`, {
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: "Bearer " + token
             }
         }).then(res => res.json())
     })
@@ -119,12 +127,12 @@ export const addTool = (invTool) => {
     });
 }
 
-export const DeleteTool = (id) => {
+export const deleteTool = (toolId, invId) => {
     return getToken().then(token => {
-        return fetch(`${_apiUrl}/deleteTool/${id}`, {
+        return fetch(`${_apiUrl}/deleteTool/${toolId}/${invId}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': "Bearer " + token
             }
         })
     });
@@ -135,7 +143,7 @@ export const getAllWeapons = () => {
         return fetch(`${_apiUrl}/weapons`, {
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: "Bearer " + token
             }
         }).then(res => res.json())
     })
@@ -146,7 +154,7 @@ export const addWeapon = (invWeapon) => {
         return fetch(`${_apiUrl}/weapon`, {
             method: "POST",
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: "Bearer " + token,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify( invWeapon )
@@ -154,12 +162,12 @@ export const addWeapon = (invWeapon) => {
     });
 }
 
-export const DeleteWeapon = (id) => {
+export const deleteWeapon = (weaponId, invId) => {
     return getToken().then(token => {
-        return fetch(`${_apiUrl}/deleteWeapon/${id}`, {
+        return fetch(`${_apiUrl}/deleteWeapon/${weaponId}/${invId}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': "Bearer " + token
             }
         })
     });
@@ -170,7 +178,7 @@ export const getAllEnergies = () => {
         return fetch(`${_apiUrl}/energy`, {
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: "Bearer " + token
             }
         }).then(res => res.json())
     })
@@ -181,7 +189,7 @@ export const addEnergy = (invEnergy) => {
         return fetch(`${_apiUrl}/energy`, {
             method: "POST",
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: "Bearer " + token,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify( invEnergy )
@@ -189,12 +197,12 @@ export const addEnergy = (invEnergy) => {
     });
 }
 
-export const DeleteEnergy = (id) => {
+export const deleteEnergy = (energyId, invId) => {
     return getToken().then(token => {
-        return fetch(`${_apiUrl}/deleteEnergy/${id}`, {
+        return fetch(`${_apiUrl}/deleteEnergy/${energyId}/${invId}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': "Bearer " + token
             }
         })
     });
@@ -205,7 +213,7 @@ export const getAllMiscellaneous = () => {
         return fetch(`${_apiUrl}/miscellaneous`, {
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: "Bearer " + token
             }
         }).then(res => res.json())
     })
@@ -216,7 +224,7 @@ export const addMiscellaneous = (invMiscellaneous) => {
         return fetch(`${_apiUrl}/miscellaneous`, {
             method: "POST",
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: "Bearer " + token,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify( invMiscellaneous )
@@ -224,12 +232,12 @@ export const addMiscellaneous = (invMiscellaneous) => {
     });
 }
 
-export const DeleteMiscellaneous = (id) => {
+export const deleteMiscellaneous = (miscId, invId) => {
     return getToken().then(token => {
-        return fetch(`${_apiUrl}/deleteMiscellaneous/${id}`, {
+        return fetch(`${_apiUrl}/deleteMiscellaneous/${miscId}/${invId}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': "Bearer " + token
             }
         })
     });

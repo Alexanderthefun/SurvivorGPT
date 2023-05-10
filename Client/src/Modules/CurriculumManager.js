@@ -7,7 +7,7 @@ export const getCurriculum = (userId) => {
         return fetch(_apiUrl, {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${token}`
+                "Authorization": `Bearer ${token}`
             }
         }).then(res => res.json())
     })
@@ -18,7 +18,7 @@ export const addCurriculum = (curriculum) => {
         return fetch(_apiUrl, {
             method: "POST",
             headers: {
-                Authorization: `Bearer ${token}`,
+                "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(curriculum)
@@ -31,7 +31,7 @@ export const editCurriculum = (curriculum) => {
         return fetch(`${baseUrl}/${curriculum.id}`, {
             method: "PUT",
             headers: {
-                Authorization: `Bearer ${token}`,
+                "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -49,7 +49,7 @@ export const deleteCurriculum = (curriculumId) => {
         return fetch(`${_apiUrl}/${curriculumId}`, {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${token}`
+                "Authorization": `Bearer ${token}`
             }
         })
     })
