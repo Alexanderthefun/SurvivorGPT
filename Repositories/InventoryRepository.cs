@@ -177,36 +177,57 @@ namespace SurvivorGPT.Repositories
 			}
 		}
 
-//		using (SqlDataReader reader = cmd.ExecuteReader())
-//					{
-//						var tools = new List<Tool>();
-//						while (reader.Read())
-//						{
-//							tools.Add(new Tool()
-//	{
-//		Id = DbUtils.GetInt(reader, "Id"),
-//								Name = DbUtils.GetString(reader, "Name")
-//							});
-//						}
-//return tools;
-
-public void AddInventory(Inventory inventory)
+		public void AddInventory(Inventory inventory)
 		{
 			using (var conn = Connection)
 			{
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
+					// Check if there's an existing Inventory object with the same UserId
+					cmd.CommandText = @"SELECT COUNT(*)
+                                FROM Inventory
+                                WHERE UserId = @checkUserId";
+					DbUtils.AddParameter(cmd, "@checkUserId", inventory.UserId);
+
+					int existingRows = (int)cmd.ExecuteScalar();
+
+					// If an Inventory object with the same UserId already exists, don't insert a new row
+					if (existingRows > 0)
+					{
+						Console.WriteLine("There is already an inventory with that UserId!");
+						return ;
+					}
+
+					// If there's no existing Inventory object with the same UserId, insert a new row
 					cmd.CommandText = @"INSERT INTO Inventory
-											(UserId)
-										OUTPUT INSERTED.ID
-										VALUES (@UserId)";
-					DbUtils.AddParameter(cmd, "@UserId", inventory.Id);
+                                (UserId)
+                                OUTPUT INSERTED.ID
+                                VALUES (@UserId)";
+					DbUtils.AddParameter(cmd, "@UserId", inventory.UserId);
 
 					inventory.Id = (int)cmd.ExecuteScalar();
 				}
 			}
 		}
+
+		//public void AddInventory(Inventory inventory)
+		//{
+		//	using (var conn = Connection)
+		//	{
+		//		conn.Open();
+		//		using (var cmd = conn.CreateCommand())
+		//		{
+		//			cmd.CommandText = @"INSERT INTO Inventory
+		//									(UserId)
+		//								OUTPUT INSERTED.ID
+		//								VALUES (@UserId)";
+		//			DbUtils.AddParameter(cmd, "@UserId", inventory.UserId);
+
+		//			inventory.Id = (int)cmd.ExecuteScalar();
+		//		}
+		//	}
+		//}
 
 		public void AddFoodType(Food food)
 		{
@@ -321,6 +342,7 @@ public void AddInventory(Inventory inventory)
 			}
 		}
 
+
 		public void AddTool(InventoryTool inventoryTool)
 		{
 			using (var conn = Connection)
@@ -328,11 +350,28 @@ public void AddInventory(Inventory inventory)
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
+					// Check if the InventoryTool with the same InventoryId and ToolId already exists
+					cmd.CommandText = @"SELECT COUNT(*)
+                                FROM InventoryTool
+                                WHERE InventoryId = @checkInventoryId AND ToolId = @checkToolId";
+					DbUtils.AddParameter(cmd, "@checkInventoryId", inventoryTool.InventoryId);
+					DbUtils.AddParameter(cmd, "@checkToolId", inventoryTool.ToolId);
+
+					int existingRows = (int)cmd.ExecuteScalar();
+
+					// If the InventoryTool already exists, don't insert a new row
+					if (existingRows > 0)
+					{
+						Console.WriteLine("There is already an InventoryTool with that InventoryId and UserId.");
+						return;
+					}
+
+					// If the InventoryTool doesn't exist, insert a new row
 					cmd.CommandText = @"INSERT INTO InventoryTool
-											(InventoryId, ToolId)
-										OUTPUT INSERTED.ID
-										VALUES 
-											(@InventoryId, @ToolId)";
+                                (InventoryId, ToolId)
+                                OUTPUT INSERTED.ID
+                                VALUES 
+                                (@InventoryId, @ToolId)";
 					DbUtils.AddParameter(cmd, "@InventoryId", inventoryTool.InventoryId);
 					DbUtils.AddParameter(cmd, "@ToolId", inventoryTool.ToolId);
 
@@ -340,6 +379,25 @@ public void AddInventory(Inventory inventory)
 				}
 			}
 		}
+		//public void AddTool(InventoryTool inventoryTool)
+		//{
+		//	using (var conn = Connection)
+		//	{
+		//		conn.Open();
+		//		using (var cmd = conn.CreateCommand())
+		//		{
+		//			cmd.CommandText = @"INSERT INTO InventoryTool
+		//									(InventoryId, ToolId)
+		//								OUTPUT INSERTED.ID
+		//								VALUES 
+		//									(@InventoryId, @ToolId)";
+		//			DbUtils.AddParameter(cmd, "@InventoryId", inventoryTool.InventoryId);
+		//			DbUtils.AddParameter(cmd, "@ToolId", inventoryTool.ToolId);
+
+		//			inventoryTool.Id = (int)cmd.ExecuteScalar();
+		//		}
+		//	}
+		//}
 
 		public void DeleteTool(int InvToolId)
 		{

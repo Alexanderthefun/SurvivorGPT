@@ -57,11 +57,11 @@ namespace SurvivorGPT.Controllers
 		}
 
 		// ...::: POSTS :::...
-		[HttpPost]
+		[HttpPost("addInv")]
 		public IActionResult AddInventory(Inventory inventory)
 		{
 			_inventoryRepository.AddInventory(inventory);
-			return CreatedAtAction("Get", new { id =  inventory.Id }, inventory);
+			return Ok(inventory);
 		}
 
 		[HttpPost("food")]
@@ -75,7 +75,7 @@ namespace SurvivorGPT.Controllers
 		public IActionResult AddTool(InventoryTool inventoryTool)
 		{
 			_inventoryRepository.AddTool(inventoryTool);
-			return CreatedAtAction("Get", new { id = inventoryTool.Id }, inventoryTool);
+			return Ok();
 		}
 
 		[HttpPost("weapon")]

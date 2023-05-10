@@ -27,7 +27,7 @@ export const getAllInventoryUserIds = () => {
 
 export const addInventory = (inventory) => {
     return getToken().then(token => {
-        return fetch(`${_apiUrl}`, {
+        return fetch(`${_apiUrl}/addInv`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export const addFoodType = (food) => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ food })
+            body: JSON.stringify( food )
         })
     })
 }
@@ -79,7 +79,7 @@ export const addFood = (invFood) => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ invFood })
+            body: JSON.stringify( invFood )
         })
     });
 }
@@ -114,7 +114,7 @@ export const addTool = (invTool) => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ invTool })
+            body: JSON.stringify( invTool )
         })
     });
 }
@@ -149,7 +149,7 @@ export const addWeapon = (invWeapon) => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ invWeapon })
+            body: JSON.stringify( invWeapon )
         })
     });
 }
@@ -184,7 +184,7 @@ export const addEnergy = (invEnergy) => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ invEnergy })
+            body: JSON.stringify( invEnergy )
         })
     });
 }
@@ -219,7 +219,7 @@ export const addMiscellaneous = (invMiscellaneous) => {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ invMiscellaneous })
+            body: JSON.stringify( invMiscellaneous )
         })
     });
 }

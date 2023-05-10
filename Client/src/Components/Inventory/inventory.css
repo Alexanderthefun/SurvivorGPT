@@ -1,18 +1,18 @@
 .inventoryContainer {
     display: flex;
     flex-direction: row;
-    width: 900px;
+    width: 1200px;
     flex-wrap: wrap;
     justify-content: center;
 }
 
 .itemDisplay {
-    border: 2px solid black;
+    border: 4px solid black;
     border-radius: 10px;
     height: 350px;
     width: 420px;
     overflow: auto;
-    margin: 4px;
+    margin: 10px;
     font-size: 16px;
 }
 
@@ -21,6 +21,15 @@
     font-size: 16px;
     color: aliceblue;
     background-color: rgb(13, 109, 31);
+    margin-right: 4px;
+    border-radius: 6px;
+}
+
+.RemoveButton {
+    float: right;
+    font-size: 16px;
+    color: aliceblue;
+    background-color: rgb(234, 4, 50);
     margin-right: 4px;
     border-radius: 6px;
 }
@@ -35,4 +44,5 @@
     background-color: black;
     margin-left: 20px;
     margin-right: 20px;
+    border-radius: 6px;
 }
