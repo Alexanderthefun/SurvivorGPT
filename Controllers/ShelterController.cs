@@ -8,6 +8,7 @@ using System.Security.Claims;
 namespace SurvivorGPT.Controllers
 {
 	[Route("api/[controller]")]
+	[Authorize]
 	[ApiController]
 	public class ShelterController : ControllerBase
 	{
@@ -18,7 +19,6 @@ namespace SurvivorGPT.Controllers
 			_shelterRepository = shelterRepository;
 		}
 
-		//[Authorize]
 		[HttpGet("{id}")]
 		public IActionResult Get(int id)
 		{
@@ -30,7 +30,6 @@ namespace SurvivorGPT.Controllers
 			return Ok(shelter);
 		}
 
-		//[Authorize]
 		[HttpPost]
 		public IActionResult Post(Shelter shelter)
 		{
@@ -38,7 +37,6 @@ namespace SurvivorGPT.Controllers
 			return CreatedAtAction("Get", new { id = shelter.Id }, shelter);
 		}
 
-		//[Authorize]
 		[HttpPut("{id}")]
 		public IActionResult Put(int id, Shelter shelter)
 		{
@@ -51,7 +49,6 @@ namespace SurvivorGPT.Controllers
 			return NoContent();
 		}
 
-		//[Authorize]
 		[HttpDelete("{id}")]
 		public IActionResult Delete(int id)
 		{

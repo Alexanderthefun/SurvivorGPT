@@ -19,7 +19,7 @@ namespace SurvivorGPT.Controllers
 			_userProfileRepository = userProfileRepository;
 		}
 
-		//[Authorize]
+		
 		[HttpGet]
 		public IActionResult Get()
 		{
@@ -38,7 +38,7 @@ namespace SurvivorGPT.Controllers
 			return Ok(user);
 		}
 
-		//[Authorize]
+		
 		[HttpGet("{firebaseUserId}")]
 		public IActionResult GetByFirebaseUserId(string firebaseUserId)
 		{
@@ -80,7 +80,7 @@ namespace SurvivorGPT.Controllers
 			return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
 		}
 
-		//[Authorize]
+		
 		[HttpPost]
 		public IActionResult Post(UserProfile user)
 		{
@@ -88,7 +88,7 @@ namespace SurvivorGPT.Controllers
 			return CreatedAtAction("Get", new { id = user.Id }, user);
 		}
 
-		//[Authorize]
+		
 		[HttpPut("{id}")]
 		public IActionResult Put(int id, UserProfile user)
 		{
@@ -101,7 +101,7 @@ namespace SurvivorGPT.Controllers
 			return NoContent();
 		}
 
-		//[Authorize]
+		
 		[HttpDelete("{id}")]
 		public IActionResult Delete(int id)
 		{

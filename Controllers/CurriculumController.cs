@@ -8,6 +8,7 @@ using System.Security.Claims;
 namespace SurvivorGPT.Controllers
 {
 	[Route("api/[controller]")]
+	[Authorize]
 	[ApiController]
 	public class CurriculumController : ControllerBase
 	{
@@ -48,7 +49,7 @@ namespace SurvivorGPT.Controllers
 			return Ok(); 
 		}
 
-		//[Authorize]
+		
 		[HttpDelete("{id}")]
 		public IActionResult Delete(int id)
 		{

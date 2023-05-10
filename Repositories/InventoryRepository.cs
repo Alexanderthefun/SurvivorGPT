@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using SurvivorGPT.Models;
@@ -101,9 +102,8 @@ namespace SurvivorGPT.Repositories
 									inventory.tools.Add(new Tool()
 									{
 										Id = DbUtils.GetInt(reader, "ToolId"),
-										Name = DbUtils.GetString(reader, "ToolName"),
-										UserHas = reader.GetBoolean(reader.GetOrdinal("UserHas"))
-									});;
+										Name = DbUtils.GetString(reader, "ToolName")
+									}); ;
 								}
 							}
 
@@ -115,8 +115,7 @@ namespace SurvivorGPT.Repositories
 									inventory.weapons.Add(new Weapon()
 									{
 										Id = DbUtils.GetInt(reader, "WeaponId"),
-										Name = DbUtils.GetString(reader, "WeaponName"),
-										UserHas = reader.GetBoolean(reader.GetOrdinal("UserHas"))
+										Name = DbUtils.GetString(reader, "WeaponName")
 									});
 								}
 							}
@@ -129,8 +128,7 @@ namespace SurvivorGPT.Repositories
 									inventory.energySources.Add(new Energy()
 									{
 										Id = DbUtils.GetInt(reader, "EnergyId"),
-										Name = DbUtils.GetString(reader, "EnergyName"),
-										UserHas = reader.GetBoolean(reader.GetOrdinal("UserHas"))
+										Name = DbUtils.GetString(reader, "EnergyName")
 									});
 								}
 							}
@@ -142,8 +140,7 @@ namespace SurvivorGPT.Repositories
 									inventory.miscellaneousItems.Add(new Miscellaneous()
 									{
 										Id = DbUtils.GetInt(reader, "MiscellaneousId"),
-										Name = DbUtils.GetString(reader, "MiscellaneousName"),
-										UserHas = reader.GetBoolean(reader.GetOrdinal("UserHas"))
+										Name = DbUtils.GetString(reader, "MiscellaneousName")
 									});
 								}
 							}
@@ -154,7 +151,46 @@ namespace SurvivorGPT.Repositories
 			}
 		}
 
-		public void AddInventory(Inventory inventory)
+		public List<Inventory> GetAllInventoryUserIds()
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"SELECT Id, UserId 
+										FROM Inventory";
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						var inventoryUserIds = new List<Inventory>();
+						while (reader.Read())
+						{
+							inventoryUserIds.Add(new Inventory()
+							{
+								Id = DbUtils.GetInt(reader, "Id"),
+								UserId = DbUtils.GetInt(reader, "UserId")
+							});
+						}
+						return inventoryUserIds;
+					}
+				}
+			}
+		}
+
+//		using (SqlDataReader reader = cmd.ExecuteReader())
+//					{
+//						var tools = new List<Tool>();
+//						while (reader.Read())
+//						{
+//							tools.Add(new Tool()
+//	{
+//		Id = DbUtils.GetInt(reader, "Id"),
+//								Name = DbUtils.GetString(reader, "Name")
+//							});
+//						}
+//return tools;
+
+public void AddInventory(Inventory inventory)
 		{
 			using (var conn = Connection)
 			{
@@ -172,7 +208,7 @@ namespace SurvivorGPT.Repositories
 			}
 		}
 
-		public void AddFood(Food food)
+		public void AddFoodType(Food food)
 		{
 			using (var conn = Connection)
 			{
@@ -189,6 +225,40 @@ namespace SurvivorGPT.Repositories
 					DbUtils.AddParameter(cmd, "@FruitVeggieFungi", food.FruitVeggieFungi);
 
 					food.Id = (int)cmd.ExecuteScalar();
+				}
+			}
+		}
+
+		public void DeleteFoodType(int id)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "DELETE FROM Food WHERE Id = @Id";
+					DbUtils.AddParameter(cmd, "@Id", id);
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public void AddFood(InventoryFood inventoryFood)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"INSERT INTO InventoryFood
+											(InventoryId, FoodId)
+										OUTPUT INSERTED.ID
+										VALUES 
+											(@InventoryId, @FoodId)";
+					DbUtils.AddParameter(cmd, "@InventoryId", inventoryFood.InventoryId);
+					DbUtils.AddParameter(cmd, "@FoodId", inventoryFood.FoodId);
+
+					inventoryFood.Id = (int)cmd.ExecuteScalar();
 				}
 			}
 		}
@@ -218,6 +288,20 @@ namespace SurvivorGPT.Repositories
 			}
 		}
 
+		public void DeleteFood(int InvFoodId)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "DELETE FROM InventoryFood WHERE Id = @InvFoodId";
+					DbUtils.AddParameter(cmd, "@Id", InvFoodId);
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
 		public void UpdateTool(Tool tool)
 		{
 			using (var conn = Connection)
@@ -228,13 +312,71 @@ namespace SurvivorGPT.Repositories
 				{
 					cmd.CommandText = @"Update Tool
 										SET Name = @Name
-											UserHas = @UserHas
 										WHERE Id = @Id";
 					DbUtils.AddParameter(cmd, "Id", tool.Id);
 					DbUtils.AddParameter(cmd, "Name", tool.Name);
-					DbUtils.AddParameter(cmd, "UserHas", tool.UserHas);
 
 					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public void AddTool(InventoryTool inventoryTool)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"INSERT INTO InventoryTool
+											(InventoryId, ToolId)
+										OUTPUT INSERTED.ID
+										VALUES 
+											(@InventoryId, @ToolId)";
+					DbUtils.AddParameter(cmd, "@InventoryId", inventoryTool.InventoryId);
+					DbUtils.AddParameter(cmd, "@ToolId", inventoryTool.ToolId);
+
+					inventoryTool.Id = (int)cmd.ExecuteScalar();
+				}
+			}
+		}
+
+		public void DeleteTool(int InvToolId)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "DELETE FROM InventoryTool WHERE Id = @InvToolId";
+					DbUtils.AddParameter(cmd, "@Id", InvToolId);
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+		public List<Tool> GetTools()
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"SELECT *
+										FROM Tool";
+
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						var tools = new List<Tool>();
+						while (reader.Read())
+						{
+							tools.Add(new Tool()
+							{
+								Id = DbUtils.GetInt(reader, "Id"),
+								Name = DbUtils.GetString(reader, "Name")
+							});
+						}
+						return tools;
+					}
 				}
 			}
 		}
@@ -249,13 +391,72 @@ namespace SurvivorGPT.Repositories
 				{
 					cmd.CommandText = @"Update Weapon
 										SET Name = @Name
-											UserHas = @UserHas
 										WHERE Id = @Id";
 					DbUtils.AddParameter(cmd, "Id", weapon.Id);
 					DbUtils.AddParameter(cmd, "Name", weapon.Name);
-					DbUtils.AddParameter(cmd, "UserHas", weapon.UserHas);
 
 					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public void AddWeapon(InventoryWeapon inventoryWeapon)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"INSERT INTO InventoryWeapon
+											(InventoryId, WeaponId)
+										OUTPUT INSERTED.ID
+										VALUES 
+											(@InventoryId, @WeaponId)";
+					DbUtils.AddParameter(cmd, "@InventoryId", inventoryWeapon.InventoryId);
+					DbUtils.AddParameter(cmd, "@WeaponId", inventoryWeapon.WeaponId);
+
+					inventoryWeapon.Id = (int)cmd.ExecuteScalar();
+				}
+			}
+		}
+
+		public void DeleteWeapon(int InvWeaponId)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "DELETE FROM InventoryWeapon WHERE Id = @InvWeaponId";
+					DbUtils.AddParameter(cmd, "@Id", InvWeaponId);
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public List<Weapon> GetWeapons()
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"SELECT *
+										FROM Weapon";
+
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						var weapons = new List<Weapon>();
+						while (reader.Read())
+						{
+							weapons.Add(new Weapon()
+							{
+								Id = DbUtils.GetInt(reader, "Id"),
+								Name = DbUtils.GetString(reader, "Name")
+							});
+						}
+						return weapons;
+					}
 				}
 			}
 		}
@@ -270,13 +471,72 @@ namespace SurvivorGPT.Repositories
 				{
 					cmd.CommandText = @"Update Energy
 										SET Name = @Name
-											UserHas = @UserHas
 										WHERE Id = @Id";
 					DbUtils.AddParameter(cmd, "Id", energy.Id);
 					DbUtils.AddParameter(cmd, "Name", energy.Name);
-					DbUtils.AddParameter(cmd, "UserHas", energy.UserHas);
 
 					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public void AddEnergy(InventoryEnergy inventoryEnergy)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"INSERT INTO InventoryEnergy
+											(InventoryId, EnergyId)
+										OUTPUT INSERTED.ID
+										VALUES 
+											(@InventoryId, @EnergyId)";
+					DbUtils.AddParameter(cmd, "@InventoryId", inventoryEnergy.InventoryId);
+					DbUtils.AddParameter(cmd, "@EnergyId", inventoryEnergy.EnergyId);
+
+					inventoryEnergy.Id = (int)cmd.ExecuteScalar();
+				}
+			}
+		}
+
+		public void DeleteEnergy(int InvEnergyId)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "DELETE FROM InventoryEnergy WHERE Id = @InvEnergyId";
+					DbUtils.AddParameter(cmd, "@Id", InvEnergyId);
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public List<Energy> GetEnergies()
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"SELECT *
+										FROM Energy";
+
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						var energies = new List<Energy>();
+						while (reader.Read())
+						{
+							energies.Add(new Energy()
+							{
+								Id = DbUtils.GetInt(reader, "Id"),
+								Name = DbUtils.GetString(reader, "Name")
+							});
+						}
+						return energies;
+					}
 				}
 			}
 		}
@@ -291,13 +551,72 @@ namespace SurvivorGPT.Repositories
 				{
 					cmd.CommandText = @"Update Miscellaneous
 										SET Name = @Name
-											UserHas = @UserHas
 										WHERE Id = @Id";
 					DbUtils.AddParameter(cmd, "Id", miscellaneous.Id);
 					DbUtils.AddParameter(cmd, "Name", miscellaneous.Name);
-					DbUtils.AddParameter(cmd, "UserHas", miscellaneous.UserHas);
 
 					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public void AddMiscellaneous(InventoryMiscellaneous inventoryMiscellaneous)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"INSERT INTO InventoryMiscellaneous
+											(InventoryId, MiscellaneousId)
+										OUTPUT INSERTED.ID
+										VALUES 
+											(@InventoryId, @MiscellaneousId)";
+					DbUtils.AddParameter(cmd, "@InventoryId", inventoryMiscellaneous.InventoryId);
+					DbUtils.AddParameter(cmd, "@MiscellaneousId", inventoryMiscellaneous.MiscellaneousId);
+
+					inventoryMiscellaneous.Id = (int)cmd.ExecuteScalar();
+				}
+			}
+		}
+
+		public void DeleteMiscellaneous(int InvMiscellaneousId)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = "DELETE FROM InventoryMiscellaneous WHERE Id = @InvMiscellaneousId";
+					DbUtils.AddParameter(cmd, "@Id", InvMiscellaneousId);
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public List<Miscellaneous> GetMiscellaneousItems()
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"SELECT *
+										FROM Miscellaneous";
+
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						var miscellaneousItems = new List<Miscellaneous>();
+						while (reader.Read())
+						{
+							miscellaneousItems.Add(new Miscellaneous()
+							{
+								Id = DbUtils.GetInt(reader, "Id"),
+								Name = DbUtils.GetString(reader, "Name")
+							});
+						}
+						return miscellaneousItems;
+					}
 				}
 			}
 		}
