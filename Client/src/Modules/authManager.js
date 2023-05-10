@@ -10,7 +10,7 @@ export const getUserDetails = (firebaseUUID) => {
       return fetch(`${_apiUrl}/${firebaseUUID}`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`
+          "Authorization": `Bearer ${token}`
         }
       }).then(res => res.json())
     })
@@ -21,7 +21,7 @@ export const getUserDetails = (firebaseUUID) => {
       fetch(`${_apiUrl}/${firebaseUserId}`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`
+          "Authorization": `Bearer ${token}`
         }
       }).then(resp => resp.json()));
   };
@@ -31,7 +31,7 @@ export const getUserDetails = (firebaseUUID) => {
       fetch(`${_apiUrl}/me`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
         },
       }).then((resp) => resp.json())
     );
@@ -64,7 +64,7 @@ export const getUserDetails = (firebaseUUID) => {
       fetch(_apiUrl, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify(userProfile)

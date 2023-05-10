@@ -211,24 +211,6 @@ namespace SurvivorGPT.Repositories
 			}
 		}
 
-		//public void AddInventory(Inventory inventory)
-		//{
-		//	using (var conn = Connection)
-		//	{
-		//		conn.Open();
-		//		using (var cmd = conn.CreateCommand())
-		//		{
-		//			cmd.CommandText = @"INSERT INTO Inventory
-		//									(UserId)
-		//								OUTPUT INSERTED.ID
-		//								VALUES (@UserId)";
-		//			DbUtils.AddParameter(cmd, "@UserId", inventory.UserId);
-
-		//			inventory.Id = (int)cmd.ExecuteScalar();
-		//		}
-		//	}
-		//}
-
 		public void AddFoodType(Food food)
 		{
 			using (var conn = Connection)
@@ -379,35 +361,17 @@ namespace SurvivorGPT.Repositories
 				}
 			}
 		}
-		//public void AddTool(InventoryTool inventoryTool)
-		//{
-		//	using (var conn = Connection)
-		//	{
-		//		conn.Open();
-		//		using (var cmd = conn.CreateCommand())
-		//		{
-		//			cmd.CommandText = @"INSERT INTO InventoryTool
-		//									(InventoryId, ToolId)
-		//								OUTPUT INSERTED.ID
-		//								VALUES 
-		//									(@InventoryId, @ToolId)";
-		//			DbUtils.AddParameter(cmd, "@InventoryId", inventoryTool.InventoryId);
-		//			DbUtils.AddParameter(cmd, "@ToolId", inventoryTool.ToolId);
 
-		//			inventoryTool.Id = (int)cmd.ExecuteScalar();
-		//		}
-		//	}
-		//}
-
-		public void DeleteTool(int InvToolId)
+		public void DeleteTool(int ToolId, int InvId)
 		{
 			using (var conn = Connection)
 			{
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "DELETE FROM InventoryTool WHERE Id = @InvToolId";
-					DbUtils.AddParameter(cmd, "@Id", InvToolId);
+					cmd.CommandText = "DELETE FROM InventoryTool WHERE ToolId = @ToolId AND InventoryId = @InvId";
+					DbUtils.AddParameter(cmd, "@ToolId", ToolId);
+					DbUtils.AddParameter(cmd, "@InvId", InvId);
 					cmd.ExecuteNonQuery();
 				}
 			}
@@ -465,11 +429,25 @@ namespace SurvivorGPT.Repositories
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
+					cmd.CommandText = @"SELECT COUNT(*)
+                                FROM InventoryWeapon
+                                WHERE InventoryId = @checkInventoryId AND WeaponId = @checkWeaponId";
+					DbUtils.AddParameter(cmd, "@checkInventoryId", inventoryWeapon.InventoryId);
+					DbUtils.AddParameter(cmd, "@checkWeaponId", inventoryWeapon.WeaponId);
+
+					int existingRows = (int)cmd.ExecuteScalar();
+
+					if (existingRows > 0)
+					{
+						Console.WriteLine("There is already an InventoryWeapon with that InventoryId and UserId.");
+						return;
+					}
+
 					cmd.CommandText = @"INSERT INTO InventoryWeapon
-											(InventoryId, WeaponId)
-										OUTPUT INSERTED.ID
-										VALUES 
-											(@InventoryId, @WeaponId)";
+                                (InventoryId, WeaponId)
+                                OUTPUT INSERTED.ID
+                                VALUES 
+                                (@InventoryId, @WeaponId)";
 					DbUtils.AddParameter(cmd, "@InventoryId", inventoryWeapon.InventoryId);
 					DbUtils.AddParameter(cmd, "@WeaponId", inventoryWeapon.WeaponId);
 
@@ -478,21 +456,22 @@ namespace SurvivorGPT.Repositories
 			}
 		}
 
-		public void DeleteWeapon(int InvWeaponId)
+		public void DeleteWeapon(int WeaponId, int InvId)
 		{
 			using (var conn = Connection)
 			{
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "DELETE FROM InventoryWeapon WHERE Id = @InvWeaponId";
-					DbUtils.AddParameter(cmd, "@Id", InvWeaponId);
+					cmd.CommandText = "DELETE FROM InventoryWeapon WHERE WeaponId = @WeaponId AND InventoryId = @InvId";
+					DbUtils.AddParameter(cmd, "@WeaponId", WeaponId);
+					DbUtils.AddParameter(cmd, "@InvId", InvId);
 					cmd.ExecuteNonQuery();
 				}
 			}
 		}
 
-		public List<Weapon> GetWeapons()
+				public List<Weapon> GetWeapons()
 		{
 			using (var conn = Connection)
 			{
@@ -545,11 +524,25 @@ namespace SurvivorGPT.Repositories
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
+					cmd.CommandText = @"SELECT COUNT(*)
+                                FROM InventoryEnergy
+                                WHERE InventoryId = @checkInventoryId AND EnergyId = @checkEnergyId";
+					DbUtils.AddParameter(cmd, "@checkInventoryId", inventoryEnergy.InventoryId);
+					DbUtils.AddParameter(cmd, "@checkEnergyId", inventoryEnergy.EnergyId);
+
+					int existingRows = (int)cmd.ExecuteScalar();
+
+					if (existingRows > 0)
+					{
+						Console.WriteLine("There is already an InventoryEnergy with that InventoryId and UserId.");
+						return;
+					}
+
 					cmd.CommandText = @"INSERT INTO InventoryEnergy
-											(InventoryId, EnergyId)
-										OUTPUT INSERTED.ID
-										VALUES 
-											(@InventoryId, @EnergyId)";
+                                (InventoryId, EnergyId)
+                                OUTPUT INSERTED.ID
+                                VALUES 
+                                (@InventoryId, @EnergyId)";
 					DbUtils.AddParameter(cmd, "@InventoryId", inventoryEnergy.InventoryId);
 					DbUtils.AddParameter(cmd, "@EnergyId", inventoryEnergy.EnergyId);
 
@@ -558,19 +551,21 @@ namespace SurvivorGPT.Repositories
 			}
 		}
 
-		public void DeleteEnergy(int InvEnergyId)
+		public void DeleteEnergy(int EnergyId, int InvId)
 		{
 			using (var conn = Connection)
 			{
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "DELETE FROM InventoryEnergy WHERE Id = @InvEnergyId";
-					DbUtils.AddParameter(cmd, "@Id", InvEnergyId);
+					cmd.CommandText = "DELETE FROM InventoryEnergy WHERE EnergyId = @EnergyId AND InventoryId = @InvId";
+					DbUtils.AddParameter(cmd, "@EnergyId", EnergyId);
+					DbUtils.AddParameter(cmd, "@InvId", InvId);
 					cmd.ExecuteNonQuery();
 				}
 			}
 		}
+
 
 		public List<Energy> GetEnergies()
 		{
@@ -618,6 +613,7 @@ namespace SurvivorGPT.Repositories
 			}
 		}
 
+
 		public void AddMiscellaneous(InventoryMiscellaneous inventoryMiscellaneous)
 		{
 			using (var conn = Connection)
@@ -625,11 +621,25 @@ namespace SurvivorGPT.Repositories
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
+					cmd.CommandText = @"SELECT COUNT(*)
+                                FROM InventoryMiscellaneous
+                                WHERE InventoryId = @checkInventoryId AND MiscellaneousId = @checkMiscellaneousId";
+					DbUtils.AddParameter(cmd, "@checkInventoryId", inventoryMiscellaneous.InventoryId);
+					DbUtils.AddParameter(cmd, "@checkMiscellaneousId", inventoryMiscellaneous.MiscellaneousId);
+
+					int existingRows = (int)cmd.ExecuteScalar();
+
+					if (existingRows > 0)
+					{
+						Console.WriteLine("There is already an InventoryMiscellaneous with that InventoryId and UserId.");
+						return;
+					}
+
 					cmd.CommandText = @"INSERT INTO InventoryMiscellaneous
-											(InventoryId, MiscellaneousId)
-										OUTPUT INSERTED.ID
-										VALUES 
-											(@InventoryId, @MiscellaneousId)";
+                                (InventoryId, MiscellaneousId)
+                                OUTPUT INSERTED.ID
+                                VALUES 
+                                (@InventoryId, @MiscellaneousId)";
 					DbUtils.AddParameter(cmd, "@InventoryId", inventoryMiscellaneous.InventoryId);
 					DbUtils.AddParameter(cmd, "@MiscellaneousId", inventoryMiscellaneous.MiscellaneousId);
 
@@ -638,15 +648,17 @@ namespace SurvivorGPT.Repositories
 			}
 		}
 
-		public void DeleteMiscellaneous(int InvMiscellaneousId)
+
+		public void DeleteMiscellaneous(int MiscellaneousId, int InvId)
 		{
 			using (var conn = Connection)
 			{
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "DELETE FROM InventoryMiscellaneous WHERE Id = @InvMiscellaneousId";
-					DbUtils.AddParameter(cmd, "@Id", InvMiscellaneousId);
+					cmd.CommandText = "DELETE FROM InventoryMiscellaneous WHERE MiscellaneousId = @MiscellaneousId AND InventoryId = @InvId";
+					DbUtils.AddParameter(cmd, "@MiscellaneousId", MiscellaneousId);
+					DbUtils.AddParameter(cmd, "@InvId", InvId);
 					cmd.ExecuteNonQuery();
 				}
 			}
