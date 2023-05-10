@@ -8,6 +8,7 @@ using System.Security.Claims;
 namespace SurvivorGPT.Controllers
 {
 	[Route("api/[controller]")]
+	//[Authorize]
 	[ApiController]
 	public class InventoryController : ControllerBase
 	{
@@ -18,14 +19,44 @@ namespace SurvivorGPT.Controllers
 			_inventoryRepository = inventoryRepository;
 		}
 
-		//[Authorize]
+		// ...::: GETS :::...
 		[HttpGet("{id}")]
 		public IActionResult GetInventory(int userId)
 		{
 			return Ok(_inventoryRepository.GetCurrentUserInventory(userId));
 		}
 
-		//[Authorize]
+		[HttpGet("getAllInvUserIds")]
+		public IActionResult GetInventoryUserIds()
+		{
+			return Ok(_inventoryRepository.GetAllInventoryUserIds());
+		}
+
+		[HttpGet("tools")]
+		public IActionResult GetTools()
+		{
+			return Ok(_inventoryRepository.GetTools());
+		}
+
+		[HttpGet("weapons")]
+		public IActionResult GetWeapons()
+		{
+			return Ok(_inventoryRepository.GetWeapons());
+		}
+
+		[HttpGet("energy")]
+		public IActionResult GetEnergies()
+		{
+			return Ok(_inventoryRepository.GetEnergies());
+		}
+
+		[HttpGet("miscellaneous")]
+		public IActionResult GetMiscellaneousItems()
+		{
+			return Ok(_inventoryRepository.GetMiscellaneousItems());
+		}
+
+		// ...::: POSTS :::...
 		[HttpPost]
 		public IActionResult AddInventory(Inventory inventory)
 		{
@@ -33,15 +64,50 @@ namespace SurvivorGPT.Controllers
 			return CreatedAtAction("Get", new { id =  inventory.Id }, inventory);
 		}
 
-		//[Authorize]
+		[HttpPost("food")]
+		public IActionResult AddFood(InventoryFood inventoryFood)
+		{
+			_inventoryRepository.AddFood(inventoryFood);
+			return CreatedAtAction("Get", new { id =  inventoryFood.Id }, inventoryFood);
+		}
+
+		[HttpPost("tool")]
+		public IActionResult AddTool(InventoryTool inventoryTool)
+		{
+			_inventoryRepository.AddTool(inventoryTool);
+			return CreatedAtAction("Get", new { id = inventoryTool.Id }, inventoryTool);
+		}
+
+		[HttpPost("weapon")]
+		public IActionResult AddWeapon(InventoryWeapon inventoryWeapon)
+		{
+			_inventoryRepository.AddWeapon(inventoryWeapon);
+			return CreatedAtAction("Get", new { id = inventoryWeapon.Id }, inventoryWeapon);
+		}
+
+		[HttpPost("energy")]
+		public IActionResult AddEnergy(InventoryEnergy inventoryEnergy)
+		{
+			_inventoryRepository.AddEnergy(inventoryEnergy);
+			return CreatedAtAction("Get", new { id = inventoryEnergy.Id }, inventoryEnergy);
+		}
+
+		[HttpPost("miscellaneous")]
+		public IActionResult AddMiscellaneous(InventoryMiscellaneous inventoryMiscellaneous)
+		{
+			_inventoryRepository.AddMiscellaneous(inventoryMiscellaneous);
+			return CreatedAtAction("Get", new { id = inventoryMiscellaneous.Id }, inventoryMiscellaneous);
+		}
+
 		[HttpPost("{food}")]
 		public IActionResult Post(Food food)
 		{
-			_inventoryRepository.AddFood(food);
+			_inventoryRepository.AddFoodType(food);
 			return CreatedAtAction("Get", new { id = food.Id }, food);
 		}
 
-		//[Authorize]
+
+		// ...::: PUTS :::...
 		[HttpPut("{food}/{id}")]
 		public IActionResult UpdateFood(int id, Food food)
 		{
@@ -54,7 +120,7 @@ namespace SurvivorGPT.Controllers
 			return NoContent();
 		}
 
-		//[Authorize]
+		
 		[HttpPut("{tool}/{id}")]
 		public IActionResult UpdateTool(int id, Tool tool)
 		{
@@ -104,6 +170,47 @@ namespace SurvivorGPT.Controllers
 		}
 
 
-		//TEST YOUR PUTS WITH TOOL, WEAPON, ENERGY, MISCELLANEOUS!!!
+		// ...::: DELETES :::...
+		[HttpDelete("deleteFood/{id}")]
+		public IActionResult DeleteFood(int id)
+		{
+			_inventoryRepository.DeleteFood(id);
+			return NoContent();
+		}
+
+		[HttpDelete("deleteFoodType/{id}")]
+		public IActionResult DeleteFoodType(int id)
+		{
+			_inventoryRepository.DeleteFoodType(id);
+			return NoContent();
+		}
+
+		[HttpDelete("deleteTool/{id}")]
+		public IActionResult DeleteTool(int id)
+		{
+			_inventoryRepository.DeleteTool(id);
+			return NoContent();
+		}
+
+		[HttpDelete("deleteWeapon/{id}")]
+		public IActionResult DeleteWeapon(int id)
+		{
+			_inventoryRepository.DeleteWeapon(id);
+			return NoContent();
+		}
+
+		[HttpDelete("deleteEnergy/{id}")]
+		public IActionResult DeleteEnergy(int id)
+		{
+			_inventoryRepository.DeleteEnergy(id);
+			return NoContent();
+		}
+
+		[HttpDelete("deleteMiscellaneous/{id}")]
+		public IActionResult DeleteMiscellaneous(int id)
+		{
+			_inventoryRepository.DeleteMiscellaneous(id);
+			return NoContent();
+		}
 	}
 }

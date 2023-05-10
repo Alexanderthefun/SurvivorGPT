@@ -41,7 +41,8 @@ export const getUserDetails = (firebaseUUID) => {
     return firebase.auth().signInWithEmailAndPassword(email, pw)
       .then((signInResponse) => _doesUserExist(signInResponse.user.uid))
       .then((doesUserExist) => {
-        if (!doesUserExist || !doesUserExist.activated) {
+        if (!doesUserExist ){
+          // || !doesUserExist.isActive) {
   
           // If we couldn't find the user in our app's database, or the user is deactivated, we should logout of firebase
           logout();

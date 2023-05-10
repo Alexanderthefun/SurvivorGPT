@@ -11,6 +11,7 @@ import {
 } from "reactstrap";
 import { logout } from "./../Modules/authManager";
 
+
 export default function Header({ isLoggedIn, userProfile }) {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
@@ -21,7 +22,7 @@ export default function Header({ isLoggedIn, userProfile }) {
                 <NavbarBrand tag={RRNavLink} to="/">
                     SurvivorGPT
                 </NavbarBrand>
-                <NavbarToggler onClick={toggle} />
+                {/* <NavbarToggler onClick={toggle} /> */}
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="mr-auto" navbar>
                         {isLoggedIn && (
@@ -35,6 +36,9 @@ export default function Header({ isLoggedIn, userProfile }) {
                                     >
                                         Logout
                                     </a>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink tag={RRNavLink} to="/Inventory">Inventory</NavLink>
                                 </NavItem>
                             </>
                         )}
@@ -54,16 +58,7 @@ export default function Header({ isLoggedIn, userProfile }) {
                         )}
                     </Nav>
                     <Nav navbar>
-                        <NavItem>
-                            <a
-                                aria-current="page"
-                                className="nav-link"
-                                href="https://www.youtube.com"
-                                target="_new"
-                            >
-                                About
-                            </a>
-                        </NavItem>
+
                         {userProfile && (
                             <NavItem>
                                 <NavLink>(DO NOT CLICK)</NavLink>

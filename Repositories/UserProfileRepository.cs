@@ -141,7 +141,7 @@ namespace SurvivorGPT.Repositories
 			}
 		}
 
-		public void Add(UserProfile userProfile)
+		public int Add(UserProfile userProfile)
 		{
 			using (var conn = Connection)
 			{
@@ -170,6 +170,7 @@ namespace SurvivorGPT.Repositories
 
 					userProfile.Id = (int)cmd.ExecuteScalar();
 				}
+				return userProfile.Id;
 			}
 		}
 

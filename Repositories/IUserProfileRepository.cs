@@ -5,11 +5,11 @@ namespace SurvivorGPT.Repositories
 {
 	public interface IUserProfileRepository
 	{
-		void Add(UserProfile userProfile);
-		void Delete(int id);
-		void Update(UserProfile userProfile);
-		List<UserProfile> GetAllUsers();
-		UserProfile GetByFirebaseUserId(string firebaseUserId);
-		UserProfile GetById(int Id);
+		public int Add(UserProfile userProfile);
+		public void Delete(int id);
+		public void Update(UserProfile userProfile);
+		public List<UserProfile> GetAllUsers();
+		public UserProfile GetByFirebaseUserId(string firebaseUserId);
+		public UserProfile GetById(int Id);
 	}
 }
