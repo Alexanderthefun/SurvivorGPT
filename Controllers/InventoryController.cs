@@ -23,7 +23,16 @@ namespace SurvivorGPT.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetInventory(int id)
 		{
-			return Ok(_inventoryRepository.GetCurrentUserInventory(id));
+			var inventoryResult = _inventoryRepository.GetCurrentUserInventory(id);
+
+			if (inventoryResult != null)
+			{
+				return Ok(inventoryResult);
+			}
+			else
+			{
+				 return Ok(new { data = (object)null });
+			}
 		}
 
 		[HttpGet("getAllInvUserIds")]
@@ -103,7 +112,7 @@ namespace SurvivorGPT.Controllers
 		public IActionResult Post(Food food)
 		{
 			_inventoryRepository.AddFoodType(food);
-			return Ok();
+			return Ok(food);
 		}
 
 
@@ -171,10 +180,10 @@ namespace SurvivorGPT.Controllers
 
 
 		// ...::: DELETES :::...
-		[HttpDelete("deleteFood/{id}")]
-		public IActionResult DeleteFood(int id)
+		[HttpDelete("deleteFood/{invId}/{foodId}")]
+		public IActionResult DeleteFood(int InvId, int foodId)
 		{
-			_inventoryRepository.DeleteFood(id);
+			_inventoryRepository.DeleteFood(InvId, foodId);
 			return NoContent();
 		}
 

@@ -11,7 +11,7 @@ namespace SurvivorGPT.Repositories
 		public void AddWeapon(InventoryWeapon inventoryWeapon);
 		public void AddEnergy(InventoryEnergy inventoryEnergy);
 		public void AddMiscellaneous(InventoryMiscellaneous inventoryMiscellaneous);
-		public void AddFoodType(Food food);
+		public Food AddFoodType(Food food);
 
 		public void UpdateFood(Food food);
 		public void UpdateTool(Tool tool);
@@ -19,7 +19,7 @@ namespace SurvivorGPT.Repositories
 		public void UpdateEnergy(Energy energy);
 		public void UpdateMiscellaneous(Miscellaneous miscellaneous);
 
-		public void DeleteFood(int InvFoodId);
+		public void DeleteFood(int InvId, int foodId);
 		public void DeleteFoodType(int id);
 		public void DeleteTool(int ToolId, int InvId);
 		public void DeleteWeapon(int WeaponId, int InvId);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router } from "react-router-dom";
 import { Spinner } from 'reactstrap';
-import Header from "./Components/Header";
+import Header from "./Components/Header/Header";
 import ApplicationViews from './Components/ApplicationView';
 import { AuthManager, getUserDetails, me, onLoginStatusChange } from "./Modules/authManager";
 import firebase from 'firebase';
@@ -16,18 +16,6 @@ function App() {
   useEffect(() => {
     onLoginStatusChange(setIsLoggedIn);
   }, []);
-
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     // firebase.auth().currentUser.uid grabs the firebaseUUID -- firebase has many helpers like this
-  //     getUserDetails(firebase.auth().currentUser.uid)
-  //       .then(userObject => {
-  //         setRole(userObject.userType.name)
-  //       })
-  //   } else {
-  //     setRole("")
-  //   }
-  // }, [isLoggedIn])
 
   useEffect(() => {
     if (isLoggedIn) {

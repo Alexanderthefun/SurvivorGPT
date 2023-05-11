@@ -1,8 +1,13 @@
-.daddyContainer {
-    background-image: url('https://c4.wallpaperflare.com/wallpaper/551/634/545/nature-landscape-mist-forest-wallpaper-preview.jpg') ;
+body {   
+   background-image: url('https://c4.wallpaperflare.com/wallpaper/551/634/545/nature-landscape-mist-forest-wallpaper-preview.jpg') ;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    background-attachment: fixed;
+}
+
+.daddyContainer {
+
 }
 
 .inventoryContainer {
@@ -55,6 +60,7 @@
 
 .userInvCard {
     backdrop-filter: blur(20px) sepia(50%);
+    background-color: rgba(0, 0, 0, 0.3); 
     border: 4px solid black;
     border-radius: 10px;
     height: 300px;
@@ -113,7 +119,8 @@
 
 .AddButton {
     float: right;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 700;
     width: 30px;
     color: aliceblue;
     background-color: rgb(13, 109, 31);
@@ -124,7 +131,8 @@
 
 .RemoveButton {
     float: right;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 700;
     width: 30px;
     color: aliceblue;
     background-color: rgb(234, 4, 50);
@@ -135,7 +143,8 @@
 
 .EditButton {
     float: right;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 700;
     width: 30px;
     color: aliceblue;
     background-color: rgb(85, 4, 234);
@@ -146,9 +155,10 @@
 
 .InfoButton {
     float: right;
-    font-size: 16px;
+    font-weight: 700;
+    font-size: 18px;
     width: 30px;
-    color: aliceblue;
+    color: rgb(0, 0, 0);
     background-color: rgb(238, 146, 8);
     margin-right: 4px;
     border: 2px solid black;
@@ -157,6 +167,11 @@
 
 .invElement {
     margin-left: 4px;
+    padding-left: 4px;
+    border: 2px solid black;
+    border-radius: 8px;
+    background-color: black;
+    color: yellow;
 }
 
 .invType {
