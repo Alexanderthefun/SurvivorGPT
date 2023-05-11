@@ -99,7 +99,7 @@ namespace SurvivorGPT.Controllers
 			return Ok();
 		}
 
-		[HttpPost("{food}")]
+		[HttpPost("foodType")]
 		public IActionResult Post(Food food)
 		{
 			_inventoryRepository.AddFoodType(food);
@@ -108,8 +108,8 @@ namespace SurvivorGPT.Controllers
 
 
 		// ...::: PUTS :::...
-		[HttpPut("{food}/{id}")]
-		public IActionResult UpdateFood(int id, Food food)
+		[HttpPut("food/{id}")]
+		public IActionResult UpdateFood(Food food, int id)
 		{
 			if (id != food.Id)
 			{

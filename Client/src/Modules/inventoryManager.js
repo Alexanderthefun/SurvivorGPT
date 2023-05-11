@@ -57,7 +57,7 @@ export const addInventory = (inventory) => {
 
 export const addFoodType = (food) => {
     return getToken().then(token => {
-        return fetch(`${_apiUrl}`, {
+        return fetch(`${_apiUrl}/foodType`, {
             method: "POST",
             headers: {
                 "Authorization": "Bearer " + token,
@@ -90,6 +90,19 @@ export const addFood = (invFood) => {
             body: JSON.stringify( invFood )
         })
     });
+}
+
+export const editFood = (food, foodId) => {
+    return getToken().then(token => {
+        return fetch(`${_apiUrl}/food/${foodId}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify( food )
+        })
+    })
 }
 
 export const DeleteFood = (id) => {
@@ -247,12 +260,6 @@ export const deleteMiscellaneous = (miscId, invId) => {
 
 
 
-
-
-
-
-
-
 //May not need, but here is the structure for EDITS:
 export const editMiscellaneous = (id, miscellaneous) => {
     return getToken().then(token => {
@@ -294,18 +301,7 @@ export const editWeapon = (id, weapon) => {
     });
 }
 
-export const editFood = (id, food) => {
-    return getToken().then(token => {
-        return fetch(`${_apiUrl}/${food}/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(food)
-        })
-    });
-}
+
 
 
 
