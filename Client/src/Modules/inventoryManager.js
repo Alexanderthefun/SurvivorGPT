@@ -18,6 +18,7 @@ export const getInventory = (id) => {
       })
       .catch(error => {
         console.error('There was an error!', error);
+        // return { data: null };
       });
     })
   }
@@ -64,6 +65,14 @@ export const addFoodType = (food) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify( food )
+        }).then((res) => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                throw new Error(
+                    "An error occured while trying to add a new food type."
+                )
+            }
         })
     })
 }
@@ -105,9 +114,9 @@ export const editFood = (food, foodId) => {
     })
 }
 
-export const DeleteFood = (id) => {
+export const DeleteFood = (invId, foodId) => {
     return getToken().then(token => {
-        return fetch(`${_apiUrl}/deleteFood/${id}`, {
+        return fetch(`${_apiUrl}/deleteFood/${invId}/${foodId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': "Bearer " + token

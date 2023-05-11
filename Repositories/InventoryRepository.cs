@@ -211,7 +211,7 @@ namespace SurvivorGPT.Repositories
 			}
 		}
 
-		public void AddFoodType(Food food)
+		public Food AddFoodType(Food food)
 		{
 			using (var conn = Connection)
 			{
@@ -229,6 +229,7 @@ namespace SurvivorGPT.Repositories
 
 					food.Id = (int)cmd.ExecuteScalar();
 				}
+				return food;
 			}
 		}
 
@@ -291,15 +292,16 @@ namespace SurvivorGPT.Repositories
 			}
 		}
 
-		public void DeleteFood(int InvFoodId)
+		public void DeleteFood(int InvId, int foodId)
 		{
 			using (var conn = Connection)
 			{
 				conn.Open();
 				using (var cmd = conn.CreateCommand())
 				{
-					cmd.CommandText = "DELETE FROM InventoryFood WHERE Id = @InvFoodId";
-					DbUtils.AddParameter(cmd, "@Id", InvFoodId);
+					cmd.CommandText = "DELETE FROM InventoryFood WHERE InventoryId = @InvId AND FoodId = @foodId";
+					DbUtils.AddParameter(cmd, "@InvId", InvId);
+					DbUtils.AddParameter(cmd, "@foodId", foodId);
 					cmd.ExecuteNonQuery();
 				}
 			}

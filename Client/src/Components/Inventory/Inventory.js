@@ -6,31 +6,53 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { me } from "../../Modules/authManager";
 import {
     addEnergy, addInventory, addMiscellaneous, addTool, addWeapon, getAllEnergies, getAllInventoryUserIds, getAllMiscellaneous,
-    getAllTools, getAllWeapons, getInventory, deleteTool, deleteWeapon, deleteEnergy, deleteMiscellaneous, editFood
+    getAllTools, getAllWeapons, getInventory, deleteTool, deleteWeapon, deleteEnergy, deleteMiscellaneous, editFood, addFoodType, addFood, DeleteFood, DeleteFoodType
 } from "../../Modules/inventoryManager";
 
 export const Inventory = () => {
     const [user, setUser] = useState(null)
     const [inventory, setInventory] = useState({})
     const [userInvId, setUserInvId] = useState(0)
-    const [allInvUserIds, setAllInvUserIds] = useState([])
     const [tools, setTools] = useState([])
     const [weapons, setWeapons] = useState([])
     const [energies, setEnergies] = useState([])
     const [miscellaneous, setMiscellaneous] = useState([])
-    const [hasBothChanged, setHasBothChanged] = useState(false)
     const [refreshInv, setRefreshInv] = useState(false)
     const [visible, setVisible] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [editingFood, setEditingFood] = useState(null);
+    const [showForm, setShowForm] = useState(false);
+    const [newFood, setNewFood] = useState({
+        name: '',
+        count: 0,
+        protein: false,
+        fruitVeggieFungi: false
+    });
 
 
     useEffect(() => {
         me().then(data => { setUser(data) })
-        getAllInventoryUserIds().then(data => {
-            setAllInvUserIds(data)
-        })
     }, [])
+
+    useEffect(() => {
+        if (user) {
+            getInventory(user.id).then(data => {
+                console.log(data);
+                if (data !== null) {
+                    setInventory(data);
+                    setUserInvId(data.id)
+                } else {
+                    const newInventory = {
+                        UserId: user.id,
+                    };
+
+                    addInventory(newInventory).then((newData) => {
+                        setUserInvId(newData.id);
+                    });
+                }
+            });
+        }
+    }, [user]);
 
     useEffect(() => {
         getAllTools()
@@ -42,12 +64,7 @@ export const Inventory = () => {
         getAllMiscellaneous()
             .then(data => { setMiscellaneous(data) });
     }, [])
-    //get user inventory after user variable populates
-    useEffect(() => {
-        if (user) {
-            getInventory(user.id).then(data => { setInventory(data) })
-        }
-    }, [user])
+
 
     useEffect(() => {
         if (refreshInv == true) {
@@ -55,45 +72,6 @@ export const Inventory = () => {
             setRefreshInv(false)
         }
     }, [refreshInv])
-
-    useEffect(() => {
-        if (hasBothChanged == true) {
-            const theOne = createOrSetInventory()
-            checkTheOne(theOne)
-        }
-    }, [hasBothChanged])
-
-    useEffect(() => {
-        if (user && allInvUserIds) {
-            setHasBothChanged(true)
-        }
-    }, [user, allInvUserIds])
-
-    //loops all inventoryIds to see if currentUser has existing inventory, if so, that user's inv is set to chosen inv.
-    const createOrSetInventory = () => {
-        let chosenInv = { empty: true };
-        for (const inv of allInvUserIds) {
-            if (inv.userId === user.id) {
-                chosenInv = inv;
-                setUserInvId(chosenInv.id)
-            }
-        }
-        return chosenInv;
-    }
-
-    //if chosenInv.empty = true, then a new inventory is made with the user's id. The inv's Id is set to userInvId.
-    const checkTheOne = (theChosenInv) => {
-        if (theChosenInv.empty === true) {
-            const newInventory = {
-                UserId: user.id
-            };
-            console.log(user)
-            addInventory(newInventory)
-                .then((newData) => {
-                    setUserInvId(newData.id)
-                });
-        }
-    }
 
 
     const handleAddButton = (Id, itemType) => {
@@ -173,6 +151,29 @@ export const Inventory = () => {
         setEditingFood(null)
         setRefreshInv(true)
     }
+
+    const handleFoodSubmit = (e) => {
+        e.preventDefault();
+
+        addFoodType(newFood).then((data) => {
+            const invFood = {
+                InventoryId: inventory.id,
+                Foodid: data.id
+            }
+            addFood(invFood)
+            setRefreshInv(true)
+        })
+
+        // Reset the form and hide it
+        setNewFood({ name: '', count: 0, protein: false, fruitVeggieFungi: false });
+        setShowForm(false);
+    };
+
+    const handleDeleteFoodButton = (foodId) => {
+        DeleteFood(inventory.id, foodId)
+        DeleteFoodType(foodId)
+        setRefreshInv(true)
+    };
 
 
 
@@ -257,7 +258,7 @@ export const Inventory = () => {
                                     <button
                                         className="AddButton"
                                         id={energy.id}
-                                        onClick={() => { handleAddButton(energy.id, 'energySource') }}
+                                        onClick={() => { handleAddButton(energy.id, 'energy') }}
                                     >+</button>
                                 )}
                             </p>
@@ -344,7 +345,7 @@ export const Inventory = () => {
                                 <button
                                     className="RemoveButton"
                                     id={misc.id}
-                                    onClick={() => { handleRemoveButton(misc.id, 'miscellaneous') }}
+                                    onClick={() => { handleRemoveButton(misc.id, 'misc') }}
                                 >-</button>
                             </p>
                         </div>
@@ -358,7 +359,7 @@ export const Inventory = () => {
                     <div className="foodLabels">
                         <h5 className="Flabel">Food Name</h5>
                         <h5 className="Flabel">Amount</h5>
-                        <h5 className="Flabel"></h5>
+                        <h5 className="Flabel">Edit/Delete</h5>
                     </div>
                     {inventory?.foods?.map(food => {
                         return (
@@ -394,20 +395,66 @@ export const Inventory = () => {
                                         Save
                                     </button>
                                 ) : (
-                                    <button
-                                        className="EditButton"
-                                        id={food.id}
-                                        onClick={() => handleEditButton(food)}
-                                    >
-                                        ✎
-                                    </button>
+                                    <div className="foodButtons">
+                                        <button
+                                            className="DeleteButton"
+                                            onClick={() => handleDeleteFoodButton(food.id)}
+                                        >
+                                            🗑️
+                                        </button>
+                                        <button
+                                            className="EditButton"
+                                            id={food.id}
+                                            onClick={() => handleEditButton(food)}
+                                        >
+                                            ✎
+                                        </button>
+                                    </div>
                                 )}
                             </div>
                         );
                     })}
+
+                    {showForm && (
+                        <form onSubmit={handleFoodSubmit}>
+                            <input
+                                type="text"
+                                placeholder="Name"
+                                value={newFood.name}
+                                onChange={(e) => setNewFood({ ...newFood, name: e.target.value })}
+                            />
+                            <input
+                                type="number"
+                                placeholder="Count"
+                                value={newFood.count}
+                                onChange={(e) => setNewFood({ ...newFood, count: parseInt(e.target.value, 10) })}
+                            />
+                            <label>
+                                Protein
+                                <input
+                                    type="checkbox"
+                                    checked={newFood.protein}
+                                    onChange={(e) => setNewFood({ ...newFood, protein: e.target.checked })}
+                                />
+                            </label>
+                            <label>
+                                Fruit/Veggie/Fungi
+                                <input
+                                    type="checkbox"
+                                    checked={newFood.fruitVeggieFungi}
+                                    onChange={(e) => setNewFood({ ...newFood, fruitVeggieFungi: e.target.checked })}
+                                />
+                            </label>
+                            <button type="submit">Add Food</button>
+                        </form>
+                    )}
+                    <button
+                        className="AddFoodButton"
+                        onClick={() => setShowForm(!showForm)}>
+                        {showForm ? 'Close' : 'Add New Food'}
+                    </button>
                 </div>
             </div>
         </div>
     )
-
 }

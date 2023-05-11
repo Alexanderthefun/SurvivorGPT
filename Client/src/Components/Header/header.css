@@ -1,0 +1,32 @@
+/* Header.css */
+
+/* Basic styling for the navbar */
+.navbar {
+    background-color: #204a15;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+  }
+  
+  .navbar-brand {
+    color: #fff;
+    text-decoration: none;
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+  }
+  
+  .nav-link:hover {
+    color: #ccc;
+    text-decoration: none;
+  }
+  
+  .logout-link {
+    margin-left: auto;
+  }
