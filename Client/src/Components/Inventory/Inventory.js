@@ -416,7 +416,9 @@ export const Inventory = () => {
                     })}
 
                     {showForm && (
-                        <form onSubmit={handleFoodSubmit}>
+                        <form
+                            className="addFoodContainer"
+                            onSubmit={handleFoodSubmit}>
                             <input
                                 type="text"
                                 placeholder="Name"
@@ -448,11 +450,14 @@ export const Inventory = () => {
                             <button type="submit">Add Food</button>
                         </form>
                     )}
-                    <button
-                        className="AddFoodButton"
-                        onClick={() => setShowForm(!showForm)}>
-                        {showForm ? 'Close' : 'Add New Food'}
-                    </button>
+                    <div className="foodButtonWrapper">
+                        <button
+                            className="AddFoodButton"
+                            onClick={() => setShowForm(!showForm)}>
+                            {showForm ? 'Close' : 'Add New Food'}
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
