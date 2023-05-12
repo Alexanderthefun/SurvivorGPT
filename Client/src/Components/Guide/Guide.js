@@ -4,6 +4,7 @@ import { getAllChatsByUserId } from '../../Modules/AiChatManager';
 import { getInventory } from '../../Modules/inventoryManager';
 import { getAllCategories } from '../../Modules/CategoryManager';
 import "./guide.css"
+import Chat from '../chat';
 
 export const Guide = () => {
     const [user, setUser] = useState(null);
@@ -34,8 +35,10 @@ export const Guide = () => {
     };
 
     return (
+
         <div className="chatDaddyContainer">
-            <div className="categorySelection">
+            <Chat />
+            {/* <div className="categorySelection">
                 <select value={selectedCategory} onChange={handleCategoryChange}>
                     <option value="">Select a category</option>
                     {categories.map((category) => (
@@ -47,17 +50,16 @@ export const Guide = () => {
                 <button onClick={handleGoButtonClick}>Go</button>
             </div>
             <div className="chats">
+
                 {chats.map((chat) => (
                     <div key={chat.id} className="chat">
-                        <div className="chatContent">{chat?.content}</div>
-                        <div className="chatActions">
-                            <button>Save</button>
-                            <button>Tell me more</button>
+                        <div className="chatContent">{chat?.content}
                             <button>Delete</button>
                         </div>
+
                     </div>
                 ))}
-            </div>
+            </div> */}
         </div>
     );
 }
