@@ -49,6 +49,8 @@ namespace SurvivorGPT
 			services.AddTransient<IUserProfileRepository, UserProfileRepository>();
 			services.AddTransient<IShelterRepository, ShelterRepository>();
 			services.AddTransient<ICurriculumRepository, CurriculumRepository>();
+			services.AddTransient<IAiChatRepository, AiChatRepository>();
+			services.AddTransient<ICategoryRepository, CategoryRepository>();
 
 
 			services.AddControllers();

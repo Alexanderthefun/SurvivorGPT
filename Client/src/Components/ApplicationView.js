@@ -4,6 +4,8 @@ import { Home } from "./Home/Home";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
 import { Inventory } from "./Inventory/Inventory";
+import { Guide } from "./Guide/Guide";
+
 
 export default function ApplicationViews({ isLoggedIn }) {
     return (
@@ -16,6 +18,10 @@ export default function ApplicationViews({ isLoggedIn }) {
                 <Route
                     path="inventory"
                     element={isLoggedIn ? <Inventory /> : <Navigate to="/login" />}
+                />
+                <Route
+                    path="guide"
+                    element={isLoggedIn ? <Guide /> : <Navigate to="/login" />}
                 />
                 <Route path="login" element={<Login />} />
                 <Route path="login/register" element={<Register />} />

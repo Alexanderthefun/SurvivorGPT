@@ -1,5 +1,5 @@
 body {   
-   background-image: url('https://c4.wallpaperflare.com/wallpaper/551/634/545/nature-landscape-mist-forest-wallpaper-preview.jpg') ;
+   background-image: url('https://r4.wallpaperflare.com/wallpaper/145/733/149/nature-trees-forest-leaves-wallpaper-3fbc82bfadb9d558777da2d414d34080.jpg') ;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -80,6 +80,8 @@ body {
     margin: 10px;
     font-size: 22px;
     font-weight: 400;
+    display: flex;
+    flex-direction: column;
 }
 
 .foodLabels {
@@ -163,6 +165,18 @@ body {
     margin-right: 4px;
     border: 2px solid black;
     border-radius: 6px;
+}
+
+.foodButtonWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: 8px;
+}
+.AddFoodButton {
+    background-color: black;
+    color: orange;
+    width: 200px;
 }
 
 .invElement {
