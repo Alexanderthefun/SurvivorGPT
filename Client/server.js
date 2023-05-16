@@ -24,10 +24,9 @@ app.post("/chat", async (req,res)=>{
     const {prompt} = req.body;
 
     const completion = await openaiConfig.createCompletion({
-        model: "GPT-3.5-Turbo",
-        // model: "text-davinci-003",
+        model: "text-davinci-003",
         max_tokens: 1000,
-        temperature: 0,
+        temperature: 0.2,
         prompt: prompt,
     })
     res.send(completion.data.choices[0].text);

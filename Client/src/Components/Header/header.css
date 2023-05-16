@@ -12,8 +12,19 @@
   .navbar-brand {
     color: #fff;
     text-decoration: none;
-    flex-grow: 1;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
+    width: 200px;
+  }
+
+  .navbar-brand:hover {
+    color: #00c407;
+    text-decoration: none;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    width: 200px;
   }
   
   .nav-link {
@@ -23,7 +34,7 @@
   }
   
   .nav-link:hover {
-    color: #ccc;
+    color: #00c407;
     text-decoration: none;
   }
   

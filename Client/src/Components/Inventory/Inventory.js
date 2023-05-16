@@ -357,8 +357,8 @@ export const Inventory = () => {
                 <div className="foodCard">
                     <h4 className="userInvType">Your Food Supply</h4>
                     <div className="foodLabels">
-                        <h5 className="Flabel">Food Name</h5>
-                        <h5 className="Flabel">Amount</h5>
+                        <h5 className="Flabel food">Food Name</h5>
+                        <h5 className="Flabel amount">Amount</h5>
                         <h5 className="Flabel">Edit/Delete</h5>
                     </div>
                     {inventory?.foods?.map(food => {
@@ -397,17 +397,17 @@ export const Inventory = () => {
                                 ) : (
                                     <div className="foodButtons">
                                         <button
-                                            className="DeleteButton"
-                                            onClick={() => handleDeleteFoodButton(food.id)}
-                                        >
-                                            🗑️
-                                        </button>
-                                        <button
                                             className="EditButton"
                                             id={food.id}
                                             onClick={() => handleEditButton(food)}
                                         >
-                                            ✎
+                                        E
+                                        </button>
+                                        <button
+                                            className="DeleteButton"
+                                            onClick={() => handleDeleteFoodButton(food.id)}
+                                        >
+                                            X
                                         </button>
                                     </div>
                                 )}
