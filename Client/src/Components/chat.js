@@ -105,8 +105,7 @@ export default function Chat() {
             </div>
         </form>
         <div className="chatActions">
-            {/* <button>Save</button>
-            <button>Tell me more</button> */}
+            {/* Add a tell me more button? */}
         </div>
     </div>
 
