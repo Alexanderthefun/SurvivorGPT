@@ -178,287 +178,289 @@ export const Inventory = () => {
 
 
     return (
-        <div className="daddyContainer">
-            <Alert color="info" className="custom-alert" isOpen={visible} >
-                {alertMessage}
-                <button
-                    type="button"
-                    className="closeAlert"
-                    onClick={onDismiss}
-                    aria-label="Close" >
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </Alert>
-            <div className="inventoryContainer">
-                <div className="itemDisplay">
-                    <h3 className="invType">Tools</h3>
-                    {tools.map(tool => {
-                        const isInInventory = inventory?.tools?.some(user_tool => user_tool.id === tool.id);
+        <div className="grandDaddyContainer">
+            <div className="daddyContainer">
+                <Alert color="info" className="custom-alert" isOpen={visible} >
+                    {alertMessage}
+                    <button
+                        type="button"
+                        className="closeAlert"
+                        onClick={onDismiss}
+                        aria-label="Close" >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </Alert>
+                <div className="inventoryContainer">
+                    <div className="itemDisplay">
+                        <h3 className="invType">Tools</h3>
+                        {tools.map(tool => {
+                            const isInInventory = inventory?.tools?.some(user_tool => user_tool.id === tool.id);
 
-                        return (
-                            <p key={tool.id} className="invElement">
-                                {tool.name}
-                                {isInInventory ? (
+                            return (
+                                <p key={tool.id} className="invElement">
+                                    {tool.name}
+                                    {isInInventory ? (
+                                        <button
+                                            className="InfoButton"
+                                            id={tool.id}
+                                            onClick={() => handleInfoButton(tool.name)}
+                                        >i</button>
+                                    ) : (
+                                        <button
+                                            className="AddButton"
+                                            id={tool.id}
+                                            onClick={() => { handleAddButton(tool.id, 'tool') }}
+                                        >+</button>
+                                    )}
+                                </p>
+                            );
+                        })}
+                    </div>
+                    <div className="itemDisplay">
+                        <h3 className="invType">Weapons</h3>
+                        {weapons.map(weapon => {
+                            const isInInventory = inventory?.weapons?.some(user_weapon => user_weapon.id === weapon.id);
+
+                            return (
+                                <p key={weapon.id} className="invElement">
+                                    {weapon.name}
+                                    {isInInventory ? (
+                                        <button
+                                            className="InfoButton"
+                                            id={weapon.id}
+                                            onClick={() => handleInfoButton(weapon.name)}
+                                        >i</button>
+                                    ) : (
+                                        <button
+                                            className="AddButton"
+                                            id={weapon.id}
+                                            onClick={() => { handleAddButton(weapon.id, 'weapon') }}
+                                        >+</button>
+                                    )}
+                                </p>
+                            );
+                        })}
+                    </div>
+                    <div className="itemDisplay">
+                        <h3 className="invType">Energy</h3>
+                        {energies.map(energy => {
+                            const isInInventory = inventory?.energySources?.some(user_energy => user_energy.id === energy.id);
+
+                            return (
+                                <p key={energy.id} className="invElement">
+                                    {energy.name}
+                                    {isInInventory ? (
+                                        <button
+                                            className="InfoButton"
+                                            id={energy.id}
+                                            onClick={() => handleInfoButton(energy.name)}
+                                        >i</button>
+                                    ) : (
+                                        <button
+                                            className="AddButton"
+                                            id={energy.id}
+                                            onClick={() => { handleAddButton(energy.id, 'energy') }}
+                                        >+</button>
+                                    )}
+                                </p>
+                            );
+                        })}
+                    </div>
+                    <div className="itemDisplay">
+                        <h3 className="invType">Miscellaneous</h3>
+                        {miscellaneous.map(misc => {
+                            const isInInventory = inventory?.miscellaneousItems?.some(user_misc => user_misc.id === misc.id);
+
+                            return (
+                                <p key={misc.id} className="invElement">
+                                    {misc.name}
+                                    {isInInventory ? (
+                                        <button
+                                            className="InfoButton"
+                                            id={misc.id}
+                                            onClick={() => handleInfoButton(misc.name)}
+                                        >i</button>
+                                    ) : (
+                                        <button
+                                            className="AddButton"
+                                            id={misc.id}
+                                            onClick={() => { handleAddButton(misc.id, 'misc') }}
+                                        >+</button>
+                                    )}
+                                </p>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* ----------------------- Inventory Side ------------------------ */}
+
+                <div className="userInventoryContainer">
+                    <div className="userInvCard">
+                        <h3 className="userInvType">Your Tools</h3>
+                        {inventory?.tools?.map(tool => {
+                            return <div key={tool.id} className="invTools">
+                                <p className="invElement">{tool.name}
                                     <button
-                                        className="InfoButton"
+                                        className="RemoveButton"
                                         id={tool.id}
-                                        onClick={() => handleInfoButton(tool.name)}
-                                    >i</button>
-                                ) : (
+                                        onClick={() => { handleRemoveButton(tool.id, 'tool') }}
+                                    >-</button>
+                                </p>
+                            </div>
+                        })}
+                    </div>
+                    <div className="userInvCard">
+                        <h3 className="userInvType">Your Weapons</h3>
+                        {inventory?.weapons?.map(weapon => {
+                            return <div key={weapon.id} className="invWeapons">
+                                <p className="invElement">{weapon.name}
                                     <button
-                                        className="AddButton"
-                                        id={tool.id}
-                                        onClick={() => { handleAddButton(tool.id, 'tool') }}
-                                    >+</button>
-                                )}
-                            </p>
-                        );
-                    })}
-                </div>
-                <div className="itemDisplay">
-                    <h3 className="invType">Weapons</h3>
-                    {weapons.map(weapon => {
-                        const isInInventory = inventory?.weapons?.some(user_weapon => user_weapon.id === weapon.id);
-
-                        return (
-                            <p key={weapon.id} className="invElement">
-                                {weapon.name}
-                                {isInInventory ? (
-                                    <button
-                                        className="InfoButton"
+                                        className="RemoveButton"
                                         id={weapon.id}
-                                        onClick={() => handleInfoButton(weapon.name)}
-                                    >i</button>
-                                ) : (
+                                        onClick={() => { handleRemoveButton(weapon.id, 'weapon') }}
+                                    >-</button>
+                                </p>
+                            </div>
+                        })}
+                    </div>
+                    <div className="userInvCard">
+                        <h3 className="userInvType">Your Energy Sources</h3>
+                        {inventory?.energySources?.map(energy => {
+                            return <div key={energy.id} className="invEnergy">
+                                <p className="invElement">{energy.name}
                                     <button
-                                        className="AddButton"
-                                        id={weapon.id}
-                                        onClick={() => { handleAddButton(weapon.id, 'weapon') }}
-                                    >+</button>
-                                )}
-                            </p>
-                        );
-                    })}
-                </div>
-                <div className="itemDisplay">
-                    <h3 className="invType">Energy</h3>
-                    {energies.map(energy => {
-                        const isInInventory = inventory?.energySources?.some(user_energy => user_energy.id === energy.id);
-
-                        return (
-                            <p key={energy.id} className="invElement">
-                                {energy.name}
-                                {isInInventory ? (
-                                    <button
-                                        className="InfoButton"
+                                        className="RemoveButton"
                                         id={energy.id}
-                                        onClick={() => handleInfoButton(energy.name)}
-                                    >i</button>
-                                ) : (
+                                        onClick={() => { handleRemoveButton(energy.id, 'energy') }}
+                                    >-</button>
+                                </p>
+                            </div>
+                        })}
+                    </div>
+                    <div className="userInvCard">
+                        <h3 className="userInvType">Your Miscellaneous Items</h3>
+                        {inventory?.miscellaneousItems?.map(misc => {
+                            return <div key={misc.id} className="invMisc">
+                                <p className="invElement">{misc.name}
                                     <button
-                                        className="AddButton"
-                                        id={energy.id}
-                                        onClick={() => { handleAddButton(energy.id, 'energy') }}
-                                    >+</button>
-                                )}
-                            </p>
-                        );
-                    })}
-                </div>
-                <div className="itemDisplay">
-                    <h3 className="invType">Miscellaneous</h3>
-                    {miscellaneous.map(misc => {
-                        const isInInventory = inventory?.miscellaneousItems?.some(user_misc => user_misc.id === misc.id);
-
-                        return (
-                            <p key={misc.id} className="invElement">
-                                {misc.name}
-                                {isInInventory ? (
-                                    <button
-                                        className="InfoButton"
+                                        className="RemoveButton"
                                         id={misc.id}
-                                        onClick={() => handleInfoButton(misc.name)}
-                                    >i</button>
-                                ) : (
-                                    <button
-                                        className="AddButton"
-                                        id={misc.id}
-                                        onClick={() => { handleAddButton(misc.id, 'misc') }}
-                                    >+</button>
-                                )}
-                            </p>
-                        );
-                    })}
-                </div>
-            </div>
-
-            {/* ----------------------- Inventory Side ------------------------ */}
-
-            <div className="userInventoryContainer">
-                <div className="userInvCard">
-                    <h4 className="userInvType">Your Tools</h4>
-                    {inventory?.tools?.map(tool => {
-                        return <div key={tool.id} className="invTools">
-                            <p className="invElement">{tool.name}
-                                <button
-                                    className="RemoveButton"
-                                    id={tool.id}
-                                    onClick={() => { handleRemoveButton(tool.id, 'tool') }}
-                                >-</button>
-                            </p>
-                        </div>
-                    })}
-                </div>
-                <div className="userInvCard">
-                    <h4 className="userInvType">Your Weapons</h4>
-                    {inventory?.weapons?.map(weapon => {
-                        return <div key={weapon.id} className="invWeapons">
-                            <p className="invElement">{weapon.name}
-                                <button
-                                    className="RemoveButton"
-                                    id={weapon.id}
-                                    onClick={() => { handleRemoveButton(weapon.id, 'weapon') }}
-                                >-</button>
-                            </p>
-                        </div>
-                    })}
-                </div>
-                <div className="userInvCard">
-                    <h4 className="userInvType">Your Energy Sources</h4>
-                    {inventory?.energySources?.map(energy => {
-                        return <div key={energy.id} className="invEnergy">
-                            <p className="invElement">{energy.name}
-                                <button
-                                    className="RemoveButton"
-                                    id={energy.id}
-                                    onClick={() => { handleRemoveButton(energy.id, 'energy') }}
-                                >-</button>
-                            </p>
-                        </div>
-                    })}
-                </div>
-                <div className="userInvCard">
-                    <h4 className="userInvType">Your Miscellaneous Items</h4>
-                    {inventory?.miscellaneousItems?.map(misc => {
-                        return <div key={misc.id} className="invMisc">
-                            <p className="invElement">{misc.name}
-                                <button
-                                    className="RemoveButton"
-                                    id={misc.id}
-                                    onClick={() => { handleRemoveButton(misc.id, 'misc') }}
-                                >-</button>
-                            </p>
-                        </div>
-                    })}
+                                        onClick={() => { handleRemoveButton(misc.id, 'misc') }}
+                                    >-</button>
+                                </p>
+                            </div>
+                        })}
+                    </div>
                 </div>
 
                 {/* --------------------- FOOD --------------------- */}
 
-                <div className="foodCard">
-                    <h4 className="userInvType">Your Food Supply</h4>
-                    <div className="foodLabels">
-                        <h5 className="Flabel food">Food Name</h5>
-                        <h5 className="Flabel amount">Amount</h5>
-                        <h5 className="Flabel">Edit/Delete</h5>
-                    </div>
-                    {inventory?.foods?.map(food => {
-                        return (
-                            <div key={food.id} className="foodRow">
-                                {editingFood?.id === food.id ? (
-                                    <input
-                                        className="invElement"
-                                        value={editingFood.name}
-                                        onChange={(e) =>
-                                            setEditingFood({ ...editingFood, name: e.target.value })
-                                        }
-                                    />
-                                ) : (
-                                    <p className="invElement">{food.name}</p>
-                                )}
-                                {editingFood?.id === food.id ? (
-                                    <input
-                                        id="foodCount"
-                                        type="number"
-                                        value={editingFood.count}
-                                        onChange={(e) =>
-                                            setEditingFood({ ...editingFood, count: parseInt(e.target.value, 10) })
-                                        }
-                                    />
-                                ) : (
-                                    <p id="foodCount">{food.count}</p>
-                                )}
-                                {editingFood?.id === food.id ? (
-                                    <button
-                                        className="SaveButton"
-                                        onClick={() => handleSaveButton(food.id)}
-                                    >
-                                        Save
-                                    </button>
-                                ) : (
-                                    <div className="foodButtons">
-                                        <button
-                                            className="EditButton"
-                                            id={food.id}
-                                            onClick={() => handleEditButton(food)}
-                                        >
-                                        E
-                                        </button>
-                                        <button
-                                            className="DeleteButton"
-                                            onClick={() => handleDeleteFoodButton(food.id)}
-                                        >
-                                            X
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    })}
-
-                    {showForm && (
-                        <form
-                            className="addFoodContainer"
-                            onSubmit={handleFoodSubmit}>
-                            <input
-                                type="text"
-                                placeholder="Name"
-                                value={newFood.name}
-                                onChange={(e) => setNewFood({ ...newFood, name: e.target.value })}
-                            />
-                            <input
-                                type="number"
-                                placeholder="Count"
-                                value={newFood.count}
-                                onChange={(e) => setNewFood({ ...newFood, count: parseInt(e.target.value, 10) })}
-                            />
-                            <label>
-                                Protein
-                                <input
-                                    type="checkbox"
-                                    checked={newFood.protein}
-                                    onChange={(e) => setNewFood({ ...newFood, protein: e.target.checked })}
-                                />
-                            </label>
-                            <label>
-                                Fruit/Veggie/Fungi
-                                <input
-                                    type="checkbox"
-                                    checked={newFood.fruitVeggieFungi}
-                                    onChange={(e) => setNewFood({ ...newFood, fruitVeggieFungi: e.target.checked })}
-                                />
-                            </label>
-                            <button type="submit">Add Food</button>
-                        </form>
-                    )}
-                    <div className="foodButtonWrapper">
-                        <button
-                            className="AddFoodButton"
-                            onClick={() => setShowForm(!showForm)}>
-                            {showForm ? 'Close' : 'Add New Food'}
-                        </button>
-                    </div>
-
+            </div>
+            <div className="foodCard">
+                <h4 className="userInvType">Your Food Supply</h4>
+                <div className="foodLabels">
+                    <h6 className="Flabel food">Food Name</h6>
+                    <h6 className="Flabel amount">Amount</h6>
+                    <h6 className="Flabel">Edit/Delete</h6>
                 </div>
+                {inventory?.foods?.map(food => {
+                    return (
+                        <div key={food.id} className="foodRow">
+                            {editingFood?.id === food.id ? (
+                                <input
+                                    className="foodinput"
+                                    value={editingFood.name}
+                                    onChange={(e) =>
+                                        setEditingFood({ ...editingFood, name: e.target.value })
+                                    }
+                                />
+                            ) : (
+                                <p className="invElement">{food.name}</p>
+                            )}
+                            {editingFood?.id === food.id ? (
+                                <input
+                                    id="foodCount"
+                                    type="number"
+                                    value={editingFood.count}
+                                    onChange={(e) =>
+                                        setEditingFood({ ...editingFood, count: parseInt(e.target.value, 10) })
+                                    }
+                                />
+                            ) : (
+                                <p id="foodCount">{food.count}</p>
+                            )}
+                            {editingFood?.id === food.id ? (
+                                <button
+                                    className="SaveButton"
+                                    onClick={() => handleSaveButton(food.id)}
+                                >
+                                    Save
+                                </button>
+                            ) : (
+                                <div className="foodButtons">
+                                    <button
+                                        className="EditButton"
+                                        id={food.id}
+                                        onClick={() => handleEditButton(food)}
+                                    >
+                                        E
+                                    </button>
+                                    <button
+                                        className="DeleteButton"
+                                        onClick={() => handleDeleteFoodButton(food.id)}
+                                    >
+                                        X
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
+
+                {showForm && (
+                    <form
+                        className="addFoodContainer"
+                        onSubmit={handleFoodSubmit}>
+                        <input
+                            type="text"
+                            placeholder="Name"
+                            value={newFood.name}
+                            onChange={(e) => setNewFood({ ...newFood, name: e.target.value })}
+                        />
+                        <input
+                            type="number"
+                            placeholder="Count"
+                            value={newFood.count}
+                            onChange={(e) => setNewFood({ ...newFood, count: parseInt(e.target.value, 10) })}
+                        />
+                        <label>
+                            Protein
+                            <input
+                                type="checkbox"
+                                checked={newFood.protein}
+                                onChange={(e) => setNewFood({ ...newFood, protein: e.target.checked })}
+                            />
+                        </label>
+                        <label>
+                            Fruit/Veggie/Fungi
+                            <input
+                                type="checkbox"
+                                checked={newFood.fruitVeggieFungi}
+                                onChange={(e) => setNewFood({ ...newFood, fruitVeggieFungi: e.target.checked })}
+                            />
+                        </label>
+                        <button type="submit">Add Food</button>
+                    </form>
+                )}
+                <div className="foodButtonWrapper">
+                    <button
+                        className="AddFoodButton"
+                        onClick={() => setShowForm(!showForm)}>
+                        {showForm ? 'Close' : 'Add New Food'}
+                    </button>
+                </div>
+
             </div>
         </div>
     )

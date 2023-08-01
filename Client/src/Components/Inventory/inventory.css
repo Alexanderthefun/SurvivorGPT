@@ -80,6 +80,22 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.36);
     box-shadow: 0 0 10px rgba(0, 0, 0, 1);
 }
+.userInvCard::-webkit-scrollbar{
+    overflow-y: auto;
+    height: calc(100% - 40px);
+    padding: 14px;
+}
+.userInvCard::-webkit-scrollbar-track{
+    background-color: rgb(162, 162, 162);
+    border-radius: 20px;
+    width: 20px;
+
+}
+.userInvCard::-webkit-scrollbar-thumb{
+    background-color: rgb(102, 108, 73);
+    border: 1px solid black;
+    border-radius: 14px;
+}
 
 .invType {
     text-align: center;
@@ -109,10 +125,12 @@ body {
 }
 
 .foodCard {
-    height: 300px;
+    height: 340px;
     width: 866px;
     overflow: auto;
-    margin: 10px;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
     font-size: 22px;
     font-weight: 400;
     display: flex;
@@ -125,17 +143,33 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.36);
     box-shadow: 0 0 10px rgba(0, 0, 0, 1);
 }
+.foodCard::-webkit-scrollbar{
+    overflow-y: auto;
+    height: calc(100% - 40px);
+    padding: 14px;
+}
+.foodCard::-webkit-scrollbar-track{
+    background-color: rgb(162, 162, 162);
+    border-radius: 20px;
+    width: 20px;
+
+}
+.foodCard::-webkit-scrollbar-thumb{
+    background-color: rgb(102, 108, 73);
+    border: 1px solid black;
+    border-radius: 14px;
+}
 
 .foodLabels {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     background: rgba(255, 255, 255, 0.33);
-    border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(0, 0, 0, 0.499);
+    border-radius: 16px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
     margin-left: 20px;
     margin-right: 20px;

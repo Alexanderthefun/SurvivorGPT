@@ -6,7 +6,8 @@ const openai = require('openai');
 openai.apiKey = process.env.OPENAI_API_KEY;
 const { Configuration, OpenAIApi } = require("openai");
 
-
+//To run this server, cd to client directoy and use command line: node server.js
+//If running correctly, you should see "Running on PORT: "
 
 
 const config = new Configuration({
